@@ -50,12 +50,19 @@ export class RegisterComponent {
   get phoneNumber() { return this.registerForm.get('phoneNumber'); }
   get address() { return this.registerForm.get('address'); }
 
-onSubmit() {
-  if (this.registerForm.valid) {
-    const formValue = { ...this.registerForm.value };
-    // Convert the date string to a full ISO string with time set to midnight
-    formValue.doB = new Date(formValue.doB).toISOString();
-    this.store.dispatch(AuthActions.registerRequest({ registerData: formValue }));
+  onSubmit() {
+    if (this.registerForm.valid) {
+      const formValue = { ...this.registerForm.value };
+  
+      // Convert the date string to a full ISO format with time set to midnight
+      formValue.doB = new Date(formValue.doB).toISOString();
+  
+      // Convert gender to a number: Male = 0, Female = 1
+      formValue.gender = formValue.gender === 'Male' ? 0 : 1;
+  
+      // Dispatch the register action with the raw formValue matching RegisterData
+      this.store.dispatch(AuthActions.registerRequest({ registerData: formValue }));
+    }
   }
-}
+
 }
