@@ -9,12 +9,12 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { AuthEffects } from './store/auth/auth.effects';
-//import { authFeature } from './store/auth/auth.reducer'; // Uncomment if you need to register a reducer
+import { authFeature } from './store/auth/auth.reducer'; // Uncomment if you need to register a reducer
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
-    provideStore(),
+    provideStore({ auth: authFeature.reducer }),
     provideEffects([AuthEffects]),
     provideRouter(routes),
     provideZoneChangeDetection({ eventCoalescing: true }),
