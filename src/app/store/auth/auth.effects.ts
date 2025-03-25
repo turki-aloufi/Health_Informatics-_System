@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, mergeMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { AuthActions } from './auth.actions';
 
@@ -9,17 +10,20 @@ import { AuthActions } from './auth.actions';
 export class AuthEffects {
   private actions$ = inject(Actions);
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginRequest),
       mergeMap((action) =>
         this.authService.login(action.credentials).pipe(
-          map((response) => AuthActions.loginSuccess({ response })),
+          mergeMap((response) => [
+            AuthActions.loginSuccess({ response })
+          ]),
           catchError((error) =>
             of(
               AuthActions.loginFailure({
-                error: error?.error?.message || 'Login failed',
+                error: error?.error?.message || 'Login failed'
               })
             )
           )
@@ -33,21 +37,31 @@ export class AuthEffects {
       ofType(AuthActions.registerRequest),
       mergeMap((action) =>
         this.authService.register(action.registerData).pipe(
-          map((response) =>
+          mergeMap((response) => [
             AuthActions.registerSuccess({
               message: response.message,
-              userId: response.userId,
+              userId: response.userId
             })
-          ),
+          ]),
           catchError((error) =>
             of(
               AuthActions.registerFailure({
-                error: error?.error?.message || 'Registration failed',
+                error: error?.error?.message || 'Registration failed'
               })
             )
           )
         )
       )
     )
+  );
+
+  // After a successful registration, navigate to the login page
+  registerRedirect$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.registerSuccess),
+        tap(() => this.router.navigate(['/login']))
+      ),
+    { dispatch: false }
   );
 }

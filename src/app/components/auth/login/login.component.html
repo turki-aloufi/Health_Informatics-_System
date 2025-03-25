@@ -1,55 +1,36 @@
-<!-- src/app/auth/login/login.component.html -->
 <div class="login-container">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <!-- Email Field -->
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input 
-          id="email"
-          type="email" 
-          formControlName="email" 
-          placeholder="Enter your email"
-        >
-        <ng-container *ngIf="loginForm.get('email') as emailCtrl">
-          <div *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)" 
-               class="error-message">
-            <div *ngIf="emailCtrl.errors?.['required']">Email is required</div>
-            <div *ngIf="emailCtrl.errors?.['email']">Invalid email format</div>
-          </div>
-        </ng-container>
-      </div>
-  
-      <!-- Password Field -->
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input 
-          id="password"
-          type="password" 
-          formControlName="password" 
-          placeholder="Enter your password"
-        >
-        <ng-container *ngIf="loginForm.get('password') as passwordCtrl">
-          <div *ngIf="passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)" 
-               class="error-message">
-            <div *ngIf="passwordCtrl.errors?.['required']">Password is required</div>
-            <div *ngIf="passwordCtrl.errors?.['minlength']">
-              Password must be at least 6 characters
-            </div>
-          </div>
-        </ng-container>
-      </div>
-  
-      <button 
-        type="submit" 
-        [disabled]="loginForm.invalid"
-      >
-        Login
-      </button>
-  
-      <div *ngIf="authState$ | async as authState" class="error-container">
-        <p *ngIf="authState.error" class="error-message">
-          {{ authState.error }}
-        </p>
-      </div>
-    </form>
-  </div>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <!-- Email Field -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" placeholder="Enter your email">
+      <ng-container *ngIf="loginForm.get('email') as emailCtrl">
+        <div *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)" class="error-message">
+          <div *ngIf="emailCtrl.errors?.['required']">Email is required</div>
+          <div *ngIf="emailCtrl.errors?.['email']">Invalid email format</div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Password Field -->
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" placeholder="Enter your password">
+      <ng-container *ngIf="loginForm.get('password') as passwordCtrl">
+        <div *ngIf="passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)" class="error-message">
+          <div *ngIf="passwordCtrl.errors?.['required']">Password is required</div>
+          <div *ngIf="passwordCtrl.errors?.['minlength']">Password must be at least 6 characters</div>
+        </div>
+      </ng-container>
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid">Login</button>
+
+    <div *ngIf="authState$ | async as authState" class="error-container">
+      <p *ngIf="authState.error" class="error-message">{{ authState.error }}</p>
+    </div>
+  </form>
+
+  <!-- Link to Registration Page -->
+  <p>Don't have an account? <a routerLink="/register">Create an account</a></p>
+</div>
