@@ -17,7 +17,7 @@ export enum UserRole {
     name: string;
     email: string;
     role: UserRole;
-    password?: string; // Optional in frontend, required only during creation
+    password?: string; 
     dob: Date;
     ssn: string;
     gender: Gender;
