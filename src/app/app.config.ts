@@ -1,15 +1,23 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core'
-import { provideRouter } from '@angular/router'
-import Aura from '@primeng/themes/aura'
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
-import { providePrimeNG } from 'primeng/config'
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import Aura from '@primeng/themes/aura';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
 
-import { routes } from './app.routes'
+import { routes } from './app.routes';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { AuthEffects } from './store/auth/auth.effects';
+import { authFeature } from './store/auth/auth.reducer'; // Uncomment if you need to register a reducer
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideHttpClient(withInterceptorsFromDi()),
+    provideStore({ auth: authFeature.reducer }),
+    provideEffects([AuthEffects]),
     provideRouter(routes),
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
@@ -23,4 +31,4 @@ export const appConfig: ApplicationConfig = {
       },
     }),
   ],
-}
+};
