@@ -3,8 +3,10 @@ import { provideRouter } from '@angular/router'
 import Aura from '@primeng/themes/aura'
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { providePrimeNG } from 'primeng/config'
-
 import { routes } from './app.routes'
+import { MyPreset } from '../assets/theme/mytheme'
+import { provideAngularSvgIcon } from 'angular-svg-icon'
+import { provideHttpClient } from '@angular/common/http'
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,8 +15,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Aura,
+        preset: MyPreset,
         options: {
+          prefix: 'p',
+          darkModeSelector: '.dark',
           cssLayer: {
             name: 'primeng',
             order: 'theme, base, primeng',
@@ -22,5 +26,7 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    provideHttpClient(),
+    provideAngularSvgIcon(),
   ],
 }

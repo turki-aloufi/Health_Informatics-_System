@@ -1,2 +1,12 @@
 @import 'tailwindcss';
 @import 'tailwindcss-primeui';
+
+@theme {
+  --color-content-background: 'var(--p-content-background)';
+  --color-content-hover-background: 'var(--p-content-hover-background)';
+}
+
+html,
+body {
+  color: var(--p-text-color);
+}
