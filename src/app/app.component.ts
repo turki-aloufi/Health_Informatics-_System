@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
+import { Router, RouterOutlet } from '@angular/router'
 import { ButtonModule } from 'primeng/button'
 import { SidebarComponent } from './components/layout/sidebar/sidebar.component'
 import { SidebarService } from './services/sidebar.service'

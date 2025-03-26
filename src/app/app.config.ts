@@ -6,12 +6,19 @@ import { providePrimeNG } from 'primeng/config'
 import { routes } from './app.routes'
 import { MyPreset } from '../assets/theme/mytheme'
 import { provideAngularSvgIcon } from 'angular-svg-icon'
-import { provideHttpClient } from '@angular/common/http'
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
+import { provideStore } from '@ngrx/store'
+import { provideEffects } from '@ngrx/effects'
+import { authFeature } from './store/auth/auth.reducer'
+import { AuthEffects } from './store/auth/auth.effects'
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideHttpClient(withInterceptorsFromDi()),
+    provideStore({ auth: authFeature.reducer }),
+    provideEffects([AuthEffects]),
     provideRouter(routes),
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
