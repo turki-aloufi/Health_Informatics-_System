@@ -1,0 +1,81 @@
+<!-- Mobile Drawer -->
+<p-drawer
+  #drawerRef
+  [visible]="isMobile && sidebarService.isOpen()"
+  [style]="{ width: '300px' }"
+  (onHide)="closeCallback($event)"
+  *ngIf="isMobile"
+>
+  <ng-container *ngTemplateOutlet="sidebarContent"></ng-container>
+</p-drawer>
+
+<div class="desktop-sidebar" *ngIf="!isMobile && sidebarService.isOpen()">
+  <ng-container *ngTemplateOutlet="sidebarContent"></ng-container>
+</div>
+
+<ng-template #sidebarContent>
+  <div
+    [ngClass]="{
+  'w-[100%] md:w-72': isSidebarOpen(),
+  'w-0': !isSidebarOpen() ,
+}"
+    class="transition-all sticky h-full duration-300 ease-in-out bg-content-background overflow-hidden"
+  >
+    <div
+      class="flex h-full w-full flex-col justify-between p-3 transition-all medium:items-center"
+    >
+      <div class="flex w-full flex-col gap-6 h-full">
+        <!-- Menu Section -->
+        <div class="pb-4 transition-all duration-300">
+          <div class="space-y-4 flex flex-col">
+            <p-panelMenu [model]="items()">
+              <ng-template #item let-item>
+                <ng-container *ngIf="item.routerLink; else urlRef">
+                  <a
+                    [routerLink]="item.routerLink"
+                    [routerLinkActiveOptions]="item.routerLinkActiveOptions"
+                    routerLinkActive="active"
+                    class="sidebar-items transition-all duration-300 flex items-center gap-3 rounded-lg hover:bg-surface-50"
+                  >
+                    <svg-icon
+                      [src]="item.icon"
+                      class="transition-transform duration-300 fill-current text-muted-color"
+                    ></svg-icon>
+                    @if (isSidebarOpen()) {
+                    <span
+                      class="p-menuitem-text transition-all duration-300 origin-left"
+                    >
+                      {{ item.label }}
+                    </span>
+                    }
+                  </a>
+                </ng-container>
+                <ng-template #urlRef>
+                  <a
+                    [routerLink]="item.routerLink"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    routerLinkActive="active"
+                    class="sidebar-items whitespace-nowrap px-3 py-2 text-color transition-all duration-300 flex items-center gap-3"
+                  >
+                    @if (isSidebarOpen()) {
+                    <svg-icon
+                      [src]="item.icon"
+                      class="transition-transform duration-300"
+                      [ngClass]="{ 'scale-110': !isSidebarOpen() }"
+                    ></svg-icon>
+                    }
+                    <span
+                      class="p-menuitem-text transition-all duration-300 origin-left"
+                    >
+                      {{ item.label }}
+                    </span>
+                  </a>
+                </ng-template>
+              </ng-template>
+            </p-panelMenu>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
