@@ -4,7 +4,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DoctorService } from '../../../services/admin-doctor.service';
 import { User } from '../../../models/user.model';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { DoctorAvailability } from '../../../models/doctor-availability.model';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -38,7 +38,7 @@ import { ReactiveFormsModule } from '@angular/forms';
       </ng-template>
     </p-table>
   `,
-  imports: [CommonModule, TableModule, ButtonModule, RouterOutlet, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, TableModule, ButtonModule, RouterModule, ReactiveFormsModule],
 })
 export class DoctorManagementComponent implements OnInit {
   doctors: User[] = [];

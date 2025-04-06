@@ -8,7 +8,7 @@ import { DoctorService } from '../../../services/admin-doctor.service';
 import { User, UserRole, Gender } from '../../../models/user.model';
 import { DoctorProfile } from '../../../models/doctor-profile.model';
 import { DoctorAvailability } from '../../../models/doctor-availability.model';
-import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -48,7 +48,7 @@ import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/rou
       <p-button label="Cancel" (onClick)="cancel()" styleClass="p-button-danger"></p-button>
     </form>
   `,
-  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, DropdownModule, RouterOutlet, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, DropdownModule, ReactiveFormsModule, RouterModule],
 
 })
 export class DoctorFormComponent implements OnInit {
