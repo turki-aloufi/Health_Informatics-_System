@@ -146,7 +146,7 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
         </div>
         
         <!-- Appointments Trend Chart -->
-        <div class="col-12 p-2">
+        <div class="col-6 p-2">
           <p-card header="Appointments Trend" styleClass="shadow-2">
             <div class="mb-3 flex justify-content-end">
               <p-dropdown [options]="trendPeriodOptions" [(ngModel)]="selectedTrendPeriod" 
