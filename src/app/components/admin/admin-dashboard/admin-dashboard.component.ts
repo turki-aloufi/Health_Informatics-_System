@@ -81,17 +81,8 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
         <!-- Appointments by Status Chart -->
         <div class="col-12 lg:col-6 p-2">
           <p-card header="Appointments by Status" styleClass="h-full shadow-2">
-            <div [style.height]="isMobile ? '220px' : '300px'" class="chart-container">
+            <div  class="chart-container">
               <p-chart type="pie" [data]="chartData.appointmentStatus" [options]="getChartOptions('pie')"></p-chart>
-            </div>
-          </p-card>
-        </div>
-        
-        <!-- Weekly Appointments Chart -->
-        <div class="col-12 lg:col-6 p-2">
-          <p-card header="Weekly Appointments" styleClass="h-full shadow-2">
-            <div [style.height]="isMobile ? '220px' : '300px'" class="chart-container">
-              <p-chart type="bar" [data]="chartData.weeklyAppointments" [options]="getChartOptions('bar')"></p-chart>
             </div>
           </p-card>
         </div>
