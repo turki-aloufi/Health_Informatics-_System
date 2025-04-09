@@ -31,7 +31,12 @@ export class AuthService {
   }
 
   login(loginData: LoginCredentials): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, loginData)
+    return this.http.post<any>(`${this.apiUrl}/login`, loginData).pipe(
+      tap(userData => {
+        console.log({ userData })
+        this.currentUserSubject.next(userData.user)
+      }),
+    )
   }
 
   register(registerData: RegisterData): Observable<any> {

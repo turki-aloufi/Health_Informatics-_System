@@ -1,11 +1,17 @@
 <div class="min-h-screen w-full bg-background">
   <div class="relative flex flex-1 h-full w-full">
-    <app-sidebar class="sticky top-0 right-0 h-full"></app-sidebar>
+    <app-sidebar
+      *ngIf="!isAuthPage()"
+      class="sticky top-0 right-0 h-full"
+    ></app-sidebar>
 
     <div class="relative flex flex-col min-h-full w-full">
-      <app-navbar class="sticky z-50 w-full top-0 right-0 h-16"></app-navbar>
+      <app-navbar
+        *ngIf="!isAuthPage()"
+        class="sticky z-50 w-full top-0 right-0 h-16"
+      ></app-navbar>
 
-      <main class="h-screen p-4 bg-surface-100 w-full overflow-y-auto">
+      <main class="h-full p-4 bg-surface-100 w-full">
         <router-outlet></router-outlet>
       </main>
     </div>

@@ -10,16 +10,16 @@
         />
       </div>
 
-      <!-- <div
+      <div
         class="ms-4 flex w-36 flex-col overflow-hidden whitespace-nowrap text-start xl:w-40"
       >
         <p class="text-sm font-semibold leading-6 text-color">
-          {{ currentUser?.user?.profile?.fullname ?? '-' }}
+          {{ user?.name }}
         </p>
         <span class="text-sm text-muted-color">
-          {{ currentUser?.user?.email ?? '-' }}
+          {{ user?.email ?? '-' }}
         </span>
-      </div> -->
+      </div>
     </div>
 
     <hr class="mt-2 border-t-2 border-surface rounded-border" />
