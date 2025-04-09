@@ -37,27 +37,7 @@ export const appConfig: ApplicationConfig = {
     provideStore({ auth: authFeature.reducer }),
     provideEffects([AuthEffects]),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(
-      [
-        { path: '', redirectTo: 'admin/patients', pathMatch: 'full' },
-        {
-          path: 'admin/doctor-management',
-          component: DoctorManagementComponent,
-        },
-        { path: 'admin/doctor-form', component: DoctorFormComponent },
-        { path: 'admin/doctor-form/:id', component: DoctorFormComponent },
-        { path: 'admin/patients', component: PatientManagementComponent },
-        { path: 'admin/patient-form', component: PatientFormComponent },
-        { path: 'admin/patient-form/:id', component: PatientFormComponent },
-        { path: 'admin/dashboard', component: DashboardComponent },
-        { path: 'auth/login', component: LoginComponent },
-
-        { path: '**', redirectTo: '/admin/dashboard' },
-      ],
-      withComponentInputBinding(),
-    ),
     provideAnimationsAsync(),
-    provideHttpClient(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideClientHydration(withEventReplay()),
     provideClientHydration(),
@@ -75,6 +55,7 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    provideRouter(routes),
 
     provideStore({
       [patientFeatureKey]: patientReducer, // Only patient reducer
