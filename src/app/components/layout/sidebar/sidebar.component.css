@@ -1,0 +1,136 @@
+.active {
+  transition: all;
+}
+
+.logo {
+  height: 24px;
+  width: 24px;
+}
+
+.sidebar-items {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  white-space: nowrap;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 1rem;
+  transition: all;
+  color: var(--p-muted-color);
+}
+
+.sidebar-items:hover {
+  background-color: var(--p-emphasis-background);
+}
+
+@media (min-width: 768px) {
+  .sidebar-items {
+    gap: 0.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebar-items {
+    justify-content: flex-start;
+  }
+}
+
+.p-menuitem-text {
+  color: var(--p-surface-600);
+}
+
+.sidebar-items svg-icon svg {
+  height: 1.63rem;
+  width: 1.63rem;
+  fill: currentColor;
+  transition: all;
+  color: var(--p-muted-color);
+}
+
+.active {
+  background-color: var(--p-content-hover-background);
+  transition: all;
+}
+
+.active .p-menuitem-text {
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+.sidebar-items.active svg-icon svg {
+  fill: currentColor;
+  color: var(--p-primary-color);
+  transition: all;
+}
+
+svg-icon.logout-icon svg {
+  fill: #ef4444;
+  transition: all;
+}
+
+svg-icon.logout-icon svg:hover {
+  fill: var(--p-primary-color);
+}
+
+.p-panelmenu-panel {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+.p-panelmenu-header-label {
+  display: none;
+}
+
+.p-panelmenu-submenu {
+  padding-left: 1rem;
+}
+
+@media (min-width: 768px) {
+  .p-panelmenu-submenu {
+    padding-left: 0.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .p-panelmenu-submenu {
+    padding-left: 1rem;
+  }
+}
+
+.p-panelmenu-content-container {
+  padding-top: 0.25rem;
+}
+
+::ng-deep .p-panelmenu-header-link {
+  display: none;
+}
+
+.menu .pi {
+  font-size: 40px;
+}
+
+.menu .flags {
+  width: 24px;
+}
+
+.menu p-button button {
+  outline: none;
+}
+
+.menu li {
+  min-width: 200px;
+  margin-top: 0.5rem;
+}
+
+.menu p-select .p-select-label {
+  padding-inline-start: 0;
+}
+
+.store-select p-select .p-overlay {
+  width: 17rem;
+}
