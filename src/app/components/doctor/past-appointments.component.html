@@ -1,0 +1,60 @@
+<div class="w-full h-full p-4 flex flex-col gap-5">
+    <p class="text-2xl px-2.5 font-semibold text-color">Past Appointments</p>
+    
+    <app-loading *ngIf="loading" message="Loading appointments..."></app-loading>
+    
+    <div *ngIf="error" class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700 mb-4">
+      <p>{{ error }}</p>
+    </div>
+  
+    <p-toast position="top-right"></p-toast>
+    
+    <ng-container *ngIf="!loading">
+      <div *ngIf="appointments.length === 0" class="p-4 bg-surface-100 rounded text-center">
+        <p>No past appointments found.</p>
+      </div>
+      
+      <div *ngIf="appointments.length > 0" class="space-y-4">
+        <p-card *ngFor="let appointment of appointments" styleClass="mb-4 shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div class="flex flex-col md:flex-row justify-between gap-4">
+            <div class="flex-1">
+              <h3 class="font-medium mb-2">Appointment ID: {{ appointment.appointmentId }}</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 mb-3">
+                <div>
+                  <p class="text-surface-600 text-sm">Patient ID: </p>
+                  <p>{{ appointment.patientId }}</p>
+                </div>
+                <div>
+                  <p class="text-surface-600 text-sm">Date & Time: </p>
+                  <p>{{ appointment.appointmentDateTime | date:'medium' }}</p>
+                </div>
+                <div>
+                  <p class="text-surface-600 text-sm">Status: </p>
+                  <p-tag [value]="getStatusDisplay(appointment.status)" [severity]="getStatusSeverity(appointment.status)"></p-tag>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <p-button 
+                (onClick)="toggleNotes(appointment)" 
+                [label]="appointment === selectedAppointment ? 'Hide Notes' : 'View Notes'"
+                severity="secondary"
+                [outlined]="appointment !== selectedAppointment"
+              ></p-button>
+            </div>
+          </div>
+          
+          <div *ngIf="appointment === selectedAppointment" class="mt-4">
+            <p-divider></p-divider>
+            <div class="mt-3">
+              <label class="block text-surface-700 mb-2">Appointment Notes:</label>
+              <div class="p-4 bg-surface-50 rounded min-h-[100px]">
+                {{ appointment.notes || 'No notes available for this appointment.' }}
+              </div>
+            </div>
+          </div>
+        </p-card>
+      </div>
+    </ng-container>
+  </div>
