@@ -1,0 +1,74 @@
+<div class="w-full h-full p-4 flex flex-col gap-5">
+    <p class="text-2xl px-2.5 font-semibold text-color">Upcoming Appointments</p>
+
+    <app-loading *ngIf="loading" message="Loading appointments..."></app-loading>
+
+    <div *ngIf="error" class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700 mb-4">
+        <p>{{ error }}</p>
+    </div>
+
+    <p-toast position="top-right"></p-toast>
+
+    <ng-container *ngIf="!loading">
+        <div *ngIf="appointments.length === 0" class="p-4 bg-surface-100 rounded text-center">
+            <p>No upcoming appointments found.</p>
+        </div>
+
+        <div *ngIf="appointments.length > 0" class="space-y-4">
+            <p-card *ngFor="let appointment of appointments"
+                styleClass="mb-4 shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="flex flex-col md:flex-row justify-between gap-4">
+                    <div class="flex-1">
+                        <h3 class="font-medium mb-2">Appointment ID: {{ appointment.appointmentId }}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 mb-3">
+                            <div>
+                                <p class="text-surface-600 text-sm">Patient ID: </p>
+                                <p>{{ appointment.patientId }}</p>
+                            </div>
+                            <div>
+                                <p class="text-surface-600 text-sm">Date & Time: </p>
+                                <p>{{ appointment.appointmentDateTime | date:'medium' }}</p>
+                            </div>
+                            <div>
+                                <p class="text-surface-600 text-sm">Status: </p>
+                                <p-tag [value]="getStatusDisplay(appointment.status)" [severity]="getStatusSeverity(appointment.status)"></p-tag>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <p-button (onClick)="toggleNotes(appointment)"
+                            [label]="appointment === selectedAppointment ? 'Close' : 'Add Notes'"
+                            [severity]="appointment === selectedAppointment ? 'secondary' : 'primary'"
+                            [outlined]="appointment === selectedAppointment"></p-button>
+                    </div>
+                </div>
+
+                <div *ngIf="appointment === selectedAppointment" class="mt-4">
+                    <p-divider></p-divider>
+                    <div class="mt-3">
+                        <label class="block text-surface-700 mb-2">Appointment Notes:</label>
+                        <label for="appointment-notes" class="block mb-1 font-medium">Notes</label>
+                        <textarea id="appointment-notes" pInputTextarea [(ngModel)]="appointment.notes" class="w-full"
+                            rows="4" name="notes"></textarea>
+
+                        <div class="flex justify-end gap-2 mt-3">
+                            <p-button (onClick)="viewPatientHistory(appointment)" label="View Patient History"
+                                severity="secondary" [outlined]="true"></p-button>
+                            <p-button (onClick)="saveNotes(appointment)" label="Save Notes"
+                                severity="success"></p-button>
+                        </div>
+                    </div>
+
+                    <div *ngIf="patientHistory.length > 0" class="mt-4 p-4 bg-surface-50 rounded">
+                        <h4 class="font-medium mb-3">Patient History</h4>
+                        <div *ngFor="let note of patientHistory" class="mb-3 p-3 bg-white rounded shadow-sm">
+                            <p class="text-sm text-surface-600 mb-1">{{ note.appointmentDateTime | date:'medium' }}</p>
+                            <p>{{ note.notes }}</p>
+                        </div>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+    </ng-container>
+</div>
