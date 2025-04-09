@@ -11,11 +11,6 @@ import {
 } from '@angular/platform-browser'
 import { provideStore } from '@ngrx/store'
 import { provideEffects } from '@ngrx/effects'
-
-import { DoctorManagementComponent } from './components/admin/doctor-management/doctor-management.component'
-import { DoctorFormComponent } from './components/admin/doctor-form/doctor-form.component'
-import { PatientManagementComponent } from './components/admin/patient-management/patient-management.component'
-import { PatientFormComponent } from './components/admin/patient-form/patient-form.component'
 import { PatientEffects } from './store/admin/patients/patient.effects'
 import {
   patientReducer,
@@ -23,13 +18,11 @@ import {
 } from './store/admin/patients/patient.reducer'
 import { routes } from './app.routes'
 
-import { DashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component'
 import { MyPreset } from '../assets/theme/mytheme'
 import { provideAngularSvgIcon } from 'angular-svg-icon'
 
 import { authFeature } from './store/auth/auth.reducer'
 import { AuthEffects } from './store/auth/auth.effects'
-import { LoginComponent } from './components/auth/login/login.component'
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptorsFromDi()),

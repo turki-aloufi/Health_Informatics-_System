@@ -45,19 +45,21 @@ export class SidebarComponent {
       {
         label: 'Dashboard',
         icon: 'assets/images/view_cozy_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
-        routerLink: 'doctor/dashboard/',
-        routerLinkActiveOptions: { exact: true },
-      },
-      {
-        label: 'Dashboard',
-        icon: 'assets/images/view_cozy_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
         routerLink: 'admin/dashboard/',
         routerLinkActiveOptions: { exact: true },
       },
+
       {
-        label: 'Dashboard',
-        icon: 'assets/images/view_cozy_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
-        routerLink: 'patient/dashboard/',
+        label: 'Doctors Management',
+        icon: 'assets/images/stethoscope_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
+        routerLink: 'admin/doctor-management/',
+        routerLinkActiveOptions: { exact: true },
+      },
+
+      {
+        label: 'Patients Management',
+        icon: 'assets/images/personal_injury_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).svg',
+        routerLink: 'admin/patients/',
         routerLinkActiveOptions: { exact: true },
       },
     ])

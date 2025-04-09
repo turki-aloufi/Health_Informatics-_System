@@ -29,7 +29,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/api/Auth/login`, loginData).pipe(
       tap(response => {
         if (response && response.token) {
-          localStorage.setItem(TokenType.ACCESS_TOKEN, response.token)
+          this.tokenService.setToken(TokenType.ACCESS_TOKEN, response.token)
           this.loadCurrentUser().subscribe()
         }
       }),
