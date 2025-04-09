@@ -4,13 +4,15 @@ import { LoginComponent } from './components/auth/login/login.component'
 import { RegisterComponent } from './components/auth/register/register.component'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { DoctorDashboardComponent } from './components/doctor/doctor-dashboard.component'
+import { DoctorProfileComponent } from './components/doctor/doctor-profile.component'
 
 export const routes: Routes = [
   {
     path: 'doctor',
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DoctorDashboardComponent }
+      { path: 'dashboard', component: DoctorDashboardComponent },
+      { path: 'profile', component: DoctorProfileComponent }
     ],
   },
   {
