@@ -1,11 +1,20 @@
-<div class="login-container">
+<div class="login-container p-4">
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <!-- Email Field -->
     <div class="form-group">
       <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email" placeholder="Enter your email">
+      <input
+        pInputText
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="Enter your email"
+      />
       <ng-container *ngIf="loginForm.get('email') as emailCtrl">
-        <div *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)" class="error-message">
+        <div
+          *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)"
+          class="error-message"
+        >
           <div *ngIf="emailCtrl.errors?.['required']">Email is required</div>
           <div *ngIf="emailCtrl.errors?.['email']">Invalid email format</div>
         </div>
@@ -15,16 +24,31 @@
     <!-- Password Field -->
     <div class="form-group">
       <label for="password">Password</label>
-      <input id="password" type="password" formControlName="password" placeholder="Enter your password">
+      <input
+        pInputText
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="Enter your password"
+      />
       <ng-container *ngIf="loginForm.get('password') as passwordCtrl">
-        <div *ngIf="passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)" class="error-message">
-          <div *ngIf="passwordCtrl.errors?.['required']">Password is required</div>
-          <div *ngIf="passwordCtrl.errors?.['minlength']">Password must be at least 6 characters</div>
+        <div
+          *ngIf="
+            passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)
+          "
+          class="error-message"
+        >
+          <div *ngIf="passwordCtrl.errors?.['required']">
+            Password is required
+          </div>
+          <div *ngIf="passwordCtrl.errors?.['minlength']">
+            Password must be at least 6 characters
+          </div>
         </div>
       </ng-container>
     </div>
 
-    <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    <p-button type="submit" [disabled]="loginForm.invalid">Login</p-button>
 
     <div *ngIf="authState$ | async as authState" class="error-container">
       <p *ngIf="authState.error" class="error-message">{{ authState.error }}</p>
