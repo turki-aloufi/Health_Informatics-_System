@@ -1,0 +1,20 @@
+::ng-deep .menu .p-menu .pi {
+  font-size: 40px;
+}
+
+.menu .p-menu {
+  width: 302px;
+}
+.menu .flags {
+  width: 24px;
+}
+.menu p-button button {
+  outline: none;
+}
+.menu li {
+  margin-top: 0.5rem;
+}
+
+::ng-deep .menu p-select .p-select-label {
+  padding-inline-start: 0;
+}

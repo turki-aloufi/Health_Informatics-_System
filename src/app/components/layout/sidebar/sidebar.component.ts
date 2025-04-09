@@ -9,6 +9,7 @@ import { PanelMenuModule } from 'primeng/panelmenu'
 import { MenuItem } from 'primeng/api'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 import { SvgIconComponent } from 'angular-svg-icon'
+import { LogoComponent } from '../../shared/logo/logo/logo.component'
 
 interface ExtendedMenuItem extends MenuItem {
   routerLinkActiveOptions?: Record<string, any>
@@ -24,6 +25,7 @@ interface ExtendedMenuItem extends MenuItem {
     RouterLinkActive,
     RouterLink,
     SvgIconComponent,
+    LogoComponent,
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
