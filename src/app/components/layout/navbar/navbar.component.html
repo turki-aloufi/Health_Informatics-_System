@@ -1,0 +1,55 @@
+<header
+  class="w-full border-b border-transparent bg-surface-0 h-full transition-all duration-300 ease-in-out"
+  [ngClass]="{
+    'border-surface':   (isScrolled() ),
+  }"
+>
+  <nav class="flex h-16 items-center px-2 medium:px-10">
+    @if (!sideBarOpen()) {
+    <div class="flex items-center gap-2">
+      <button
+        (click)="toggleSidebar()"
+        class="flex items-center justify-center p-2 hover:bg-content-hover-background rounded-full"
+      >
+        <svg-icon
+          [src]="
+            '/assets/images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg'
+          "
+          class="fill-current text-color"
+          svgClass="h-6 w-6"
+        ></svg-icon>
+      </button>
+    </div>
+    }@else {
+    <div class="flex items-center">
+      <a
+        class="flex items-center gap-4 hover:opacity-80 transition-opacity"
+        routerLink="/staff"
+        aria-label="Staff Dashboard"
+      >
+        <div class="flex items-center gap-4">
+          <!-- <app-logo [width]="36"></app-logo> -->
+          <!-- <span class="hidden medium:inline-flex whitespace-nowrap">{{
+                'app.name' | translate
+              }}</span> -->
+        </div>
+      </a>
+    </div>
+    }
+
+    <!-- Right Section: User Menu -->
+    <!-- <p-popover
+      #popover
+      id="my-element"
+      verticalAlign="below"
+      styleClass=" before:hidden after:hidden"
+    >
+      <app-user-menu></app-user-menu>
+    </p-popover> -->
+    <div class="ms-auto flex gap-4 justify-end items-center">
+      <p-button severity="secondary" styleClass="text-sm "
+        >تسجيل الدخول</p-button
+      >
+    </div>
+  </nav>
+</header>

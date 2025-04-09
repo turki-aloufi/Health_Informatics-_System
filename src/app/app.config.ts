@@ -4,7 +4,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import Aura from '@primeng/themes/aura';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
@@ -15,30 +15,50 @@ import { PatientManagementComponent } from './components/admin/patient-managemen
 import { PatientFormComponent } from './components/admin/patient-form/patient-form.component';
 import { PatientEffects } from './store/admin/patients/patient.effects';
 import { patientReducer, patientFeatureKey } from './store/admin/patients/patient.reducer';
+import { routes } from './app.routes'
 
+import { DashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component'
+import { MyPreset } from '../assets/theme/mytheme'
+import { provideAngularSvgIcon } from 'angular-svg-icon'
+
+import { authFeature } from './store/auth/auth.reducer'
+import { AuthEffects } from './store/auth/auth.effects'
+import { LoginComponent } from './components/auth/login/login.component';
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(withInterceptorsFromDi()),
+
+    provideStore({ auth: authFeature.reducer }),
+    provideEffects([AuthEffects]),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       [
-        { path: '', redirectTo: '/admin/doctor-management', pathMatch: 'full' },
+        { path: '', redirectTo: 'admin/patients', pathMatch: 'full' },
         { path: 'admin/doctor-management', component: DoctorManagementComponent },
         { path: 'admin/doctor-form', component: DoctorFormComponent },
         { path: 'admin/doctor-form/:id', component: DoctorFormComponent },
         { path: 'admin/patients', component: PatientManagementComponent },
         { path: 'admin/patient-form', component: PatientFormComponent },
         { path: 'admin/patient-form/:id', component: PatientFormComponent },
-        { path: '**', redirectTo: '/admin/patients' },
+        { path: 'admin/dashboard', component: DashboardComponent },
+        { path: 'auth/login', component: LoginComponent},
+
+        { path: '**', redirectTo: '/admin/dashboard' },
       ],
       withComponentInputBinding()
     ),
     provideAnimationsAsync(),
     provideHttpClient(),
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideClientHydration(withEventReplay()),
+    provideClientHydration(),
+
     providePrimeNG({
       theme: {
-        preset: Aura,
+        preset: MyPreset,
         options: {
+          prefix: 'p',
+          darkModeSelector: '.dark',
           cssLayer: {
             name: 'primeng',
             order: 'theme, base, primeng',
@@ -46,9 +66,13 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+
+  
     provideStore({
       [patientFeatureKey]: patientReducer, // Only patient reducer
     }),
     provideEffects([PatientEffects]), // Only patient effects
+
+    provideAngularSvgIcon(),
   ],
 };
