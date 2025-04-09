@@ -121,10 +121,6 @@ import { MessageService } from 'primeng/api';
       <div *ngIf="errorMessage" class="mt-4 p-3 bg-red-100 text-red-700 rounded">
         {{ errorMessage }}
       </div>
-      
-      <div *ngIf="debugInfo" class="mt-4 p-3 bg-blue-50 text-blue-800 rounded text-xs opacity-80">
-        <pre>{{ debugInfo }}</pre>
-      </div>
     </p-card>
     
     <p-toast></p-toast>
@@ -147,7 +143,6 @@ import { MessageService } from 'primeng/api';
 export class DoctorFormComponent implements OnInit {
   isEditMode = false;
   errorMessage = '';
-  debugInfo = '';
   
   // Base doctor object with proper property names
   doctor: any = {
@@ -260,14 +255,15 @@ export class DoctorFormComponent implements OnInit {
           });
         }
 
-        this.debugInfo = JSON.stringify({
+        // Debug info only logged to console now, not displayed in UI
+        console.debug('Debug info:', {
           loadedDoctor: doctor,
           mappedDoctorForm: {
             doctor: this.doctor,
             doctorProfile: this.doctorProfile,
             availabilities: this.availabilities
           }
-        }, null, 2);
+        });
       },
       error: (err) => {
         this.errorMessage = err.message || 'Failed to load doctor information. Please try again.';
@@ -283,7 +279,6 @@ export class DoctorFormComponent implements OnInit {
 
   saveDoctor() {
     this.errorMessage = '';
-    this.debugInfo = '';
     
     // Filter out availabilities where both start and end time are null
     const filteredAvailabilities = this.availabilities
@@ -312,9 +307,8 @@ export class DoctorFormComponent implements OnInit {
       availabilities: filteredAvailabilities
     };
     
-    // For debugging
-    this.debugInfo = JSON.stringify(doctorData, null, 2);
-    console.log('Sending doctor data:', doctorData);
+    // Debug info only logged to console now, not displayed in UI
+    console.debug('Sending doctor data:', doctorData);
     
     if (this.isEditMode) {
       this.doctorService.updateDoctor(doctorData).subscribe({

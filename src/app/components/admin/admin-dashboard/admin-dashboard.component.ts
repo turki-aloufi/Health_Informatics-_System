@@ -42,7 +42,7 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
       <!-- Dashboard content -->
       <div *ngIf="!loading" class="grid">
         <!-- Summary Cards -->
-        <div class="col-6 md:col-3 p-2">
+        <div class="col-span-1">
           <p-card styleClass="h-full shadow-2">
             <div class="flex flex-column align-items-center text-center">
               <span class="text-3xl md:text-5xl font-bold text-blue-500">{{ summary?.totalAppointments || 0 }}</span>
@@ -51,7 +51,7 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
           </p-card>
         </div>
         
-        <div class="col-6 md:col-3 p-2">
+        <div class="col-span-1">
           <p-card styleClass="h-full shadow-2">
             <div class="flex flex-column align-items-center text-center">
               <span class="text-3xl md:text-5xl font-bold text-green-500">{{ summary?.weeklyAppointments || 0 }}</span>
@@ -60,7 +60,7 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
           </p-card>
         </div>
         
-        <div class="col-6 md:col-3 p-2">
+        <div class="col-span-1">
           <p-card styleClass="h-full shadow-2">
             <div class="flex flex-column align-items-center text-center">
               <span class="text-3xl md:text-5xl font-bold text-purple-500">{{ summary?.totalPatients || 0 }}</span>
@@ -69,7 +69,7 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
           </p-card>
         </div>
         
-        <div class="col-6 md:col-3 p-2">
+        <div class="col-span-1">
           <p-card styleClass="h-full shadow-2">
             <div class="flex flex-column align-items-center text-center">
               <span class="text-3xl md:text-5xl font-bold text-orange-500">{{ summary?.totalDoctors || 0 }}</span>
@@ -79,27 +79,27 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
         </div>
 
         <!-- Appointments by Status Chart -->
-        <div class="col-12 lg:col-6 p-2">
+        <div class="col-span-2">
           <p-card header="Appointments by Status" styleClass="h-full shadow-2">
-            <div  class="chart-container">
+            <div class="chart-container">
               <p-chart type="pie" [data]="chartData.appointmentStatus" [options]="getChartOptions('pie')"></p-chart>
             </div>
           </p-card>
         </div>
         
         <!-- Patient Demographics -->
-        <div class="col-12 lg:col-6 p-2 ">
+        <div class="col-span-2">
           <p-card header="Patient Demographics" styleClass="h-full shadow-2">
             <div class="mb-3">
               <h3 class="text-base md:text-lg font-medium mb-2">Gender Distribution</h3>
-              <div  class="chart-container ">
+              <div class="chart-container">
                 <p-chart type="doughnut" [data]="chartData.genderDistribution" [options]="getChartOptions('doughnut')"></p-chart>
               </div>
             </div>
             <p-divider></p-divider>
-            <div class="">
+            <div>
               <h3 class="text-base md:text-lg font-medium mb-2">Age Distribution</h3>
-              <div  class="chart-container ">
+              <div class="chart-container">
                 <p-chart type="bar" [data]="chartData.ageDistribution" [options]="getChartOptions('horizontalBar')"></p-chart>
               </div>
             </div>
@@ -107,7 +107,7 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
         </div>
         
         <!-- Doctor Workload Table -->
-        <div class="col-12 lg:col-6 p-2">
+        <div class="col-span-2">
           <p-card header="Doctor Workload" styleClass="h-full shadow-2">
             <p-scrollPanel [style]="{ width: '100%', height: isMobile ? '320px' : '420px' }">
               <div *ngIf="doctorWorkload && doctorWorkload.length > 0">
@@ -146,7 +146,7 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
         </div>
         
         <!-- Appointments Trend Chart -->
-        <div class="col-6 p-2">
+        <div class="col-span-2">
           <p-card header="Appointments Trend" styleClass="shadow-2">
             <div class="mb-3 flex justify-content-end">
               <p-dropdown [options]="trendPeriodOptions" [(ngModel)]="selectedTrendPeriod" 
@@ -168,6 +168,20 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
       margin: 0 auto;
     }
     
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    
+    .col-span-1 {
+      grid-column: span 1;
+    }
+    
+    .col-span-2 {
+      grid-column: span 2;
+    }
+    
     .chart-container {
       width: 100%;
       position: relative;
@@ -187,6 +201,18 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
     }
     
     @media screen and (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .col-span-1 {
+        grid-column: span 1;
+      }
+      
+      .col-span-2 {
+        grid-column: span 2;
+      }
+      
       :host ::ng-deep .p-card .p-card-body {
         padding: 0.75rem;
       }
@@ -203,6 +229,20 @@ import { DashboardService } from '../../../services/admin-dashboard.service';
       :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
         padding: 0.5rem;
         font-size: 0.75rem;
+      }
+    }
+    
+    @media screen and (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .col-span-1 {
+        grid-column: span 1;
+      }
+      
+      .col-span-2 {
+        grid-column: span 1;
       }
     }
   `]

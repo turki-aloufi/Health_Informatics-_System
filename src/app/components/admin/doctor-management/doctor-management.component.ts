@@ -58,13 +58,13 @@ import { ConfirmationService } from 'primeng/api';
                 <p-button 
                   icon="pi pi-pencil" 
                   (onClick)="navigateToForm(doctor.idPublic)" 
-                  styleClass="p-button-sm p-button-info">
-                </p-button>
+                  styleClass="p-button-sm p-button-info px-6">
+                Details</p-button>
                 <p-button 
                   icon="pi pi-trash" 
                   (onClick)="confirmDelete(doctor)" 
-                  styleClass="p-button-sm p-button-danger">
-                </p-button>
+                  styleClass="p-button-sm p-button-danger px-6">
+                Delete </p-button>
               </div>
             </td>
           </tr>
