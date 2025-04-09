@@ -62,11 +62,13 @@ import { PatientState } from '../../../store/admin/patients/patient.reducer';
               <td>
                 <div class="flex gap-2">
                   <p-button 
+                    label="Edit" 
                     icon="pi pi-pencil" 
                     (onClick)="navigateToForm(patient.idPublic)" 
                     styleClass="p-button-sm p-button-info">
                   </p-button>
                   <p-button 
+                    label="Delete" 
                     icon="pi pi-trash" 
                     (onClick)="confirmDelete(patient)" 
                     styleClass="p-button-sm p-button-danger">
@@ -78,17 +80,17 @@ import { PatientState } from '../../../store/admin/patients/patient.reducer';
           <ng-template pTemplate="emptymessage">
             <tr>
               <td colspan="6" class="text-center p-4">
-              No patients found. Click "Add Patient" to create one.
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </ng-container>
-  </p-card>
+                No patients found. Click "Add Patient" to create one.
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-container>
+    </p-card>
 
-  <p-toast></p-toast>
-  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
-`,
+    <p-toast></p-toast>
+    <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+  `,
 imports: [
   CommonModule,
   TableModule,

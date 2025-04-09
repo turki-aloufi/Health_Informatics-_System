@@ -188,27 +188,27 @@ export class PatientFormComponent implements OnInit {
     this.patient.doB = new Date(this.doBString);
     const patientData = this.id
       ? {
-          name: this.patient.name,
-          email: this.patient.email,
-          doB: this.patient.doB.toISOString(),
-          ssn: this.patient.ssn,
-          gender: this.patient.gender === Gender.Male ? 0 : 1,
-          phoneNumber: this.patient.phoneNumber,
-          address: this.patient.address,
-          medicalHistory: this.patient.patientProfile.medicalHistory,
-          insuranceDetails: this.patient.patientProfile.insuranceDetails,
-          emergencyContact: this.patient.patientProfile.emergencyContact,
-        }
+        name: this.patient.name,
+        email: this.patient.email,
+        doB: this.patient.doB.toISOString(),
+        ssn: this.patient.ssn,
+        gender: this.patient.gender === Gender.Male ? 0 : 1,
+        phoneNumber: this.patient.phoneNumber,
+        address: this.patient.address,
+        medicalHistory: this.patient.patientProfile.medicalHistory,
+        insuranceDetails: this.patient.patientProfile.insuranceDetails,
+        emergencyContact: this.patient.patientProfile.emergencyContact,
+      }
       : {
-          name: this.patient.name,
-          email: this.patient.email,
-          password: this.patient.password || undefined,
-          doB: this.patient.doB.toISOString(),
-          ssn: this.patient.ssn,
-          gender: this.patient.gender === Gender.Male ? 0 : 1,
-          phoneNumber: this.patient.phoneNumber,
-          address: this.patient.address,
-        };
+        name: this.patient.name,
+        email: this.patient.email,
+        password: this.patient.password || undefined,
+        doB: this.patient.doB.toISOString(),
+        ssn: this.patient.ssn,
+        gender: this.patient.gender === Gender.Male ? 0 : 1,
+        phoneNumber: this.patient.phoneNumber,
+        address: this.patient.address,
+      };
 
     console.log('Submitting patient data:', patientData);
 

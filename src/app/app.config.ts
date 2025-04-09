@@ -21,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       [
-        { path: '', redirectTo: '/admin/patients', pathMatch: 'full' },
+        { path: '', redirectTo: '/admin/doctor-management', pathMatch: 'full' },
         { path: 'admin/doctor-management', component: DoctorManagementComponent },
         { path: 'admin/doctor-form', component: DoctorFormComponent },
         { path: 'admin/doctor-form/:id', component: DoctorFormComponent },

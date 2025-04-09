@@ -6,6 +6,11 @@ import { catchError, map } from 'rxjs/operators';
 import { User, Gender, UserRole } from '../models/user.model';
 import { PatientProfile } from '../models/patient-profile.model';
 
+interface ApiResponse<T> {
+  msg: string;
+  data: T;
+}
+
 interface CreatePatientResponse {
   message: string;
   userId: number;
@@ -15,7 +20,7 @@ interface CreatePatientResponse {
   providedIn: 'root',
 })
 export class PatientService {
-  private apiUrl = 'http://localhost:5098/api/AdminPatients'; 
+  private apiUrl = 'http://localhost:5098/api/AdminPatients';
 
   constructor(private http: HttpClient) {}
 
@@ -45,13 +50,13 @@ export class PatientService {
   getPatients(): Observable<User[]> {
     console.log('Fetching patients from:', `${this.apiUrl}/get-all-patients`);
     return this.http
-      .get<any>(`${this.apiUrl}/get-all-patients`, { // Adjust type if needed
+      .get<ApiResponse<any[]>>(`${this.apiUrl}/get-all-patients`, {
         headers: this.getHeaders(),
       })
       .pipe(
         map((response) => {
           console.log('Response:', response);
-          return response.data.map((p: { idPublic: any; name: any; email: any; role: UserRole; doB: string | number | Date; ssn: any; gender: Gender; phoneNumber: any; address: any; medicalHistory: any; insuranceDetails: any; emergencyContact: any; }) => ({
+          return response.data.map((p) => ({
             idPublic: p.idPublic,
             name: p.name,
             email: p.email,
@@ -85,18 +90,18 @@ export class PatientService {
         map((response) => {
           console.log('Create response:', response);
           return {
-            idPublic: response.userId.toString(), // Convert number to string
-            name: patientData.name, // Use input data since response lacks details
+            idPublic: response.userId.toString(),
+            name: patientData.name,
             email: patientData.email,
             password: patientData.password,
             role: UserRole.Patient,
             doB: new Date(patientData.doB),
             ssn: patientData.ssn,
-            gender: patientData.gender === Gender.Male ? Gender.Male : Gender.Female,
+            gender: patientData.gender === 0 ? Gender.Male : Gender.Female,
             phoneNumber: patientData.phoneNumber,
             address: patientData.address,
             patientProfile: {
-              medicalHistory: '', // Not provided by this endpoint
+              medicalHistory: '',
               insuranceDetails: '',
               emergencyContact: '',
             } as PatientProfile,
@@ -107,9 +112,10 @@ export class PatientService {
   }
 
   updatePatient(id: string, patientData: any): Observable<User> {
-    console.log('Updating patient at:', `${this.apiUrl}/update-patient/${id}`, patientData);
+    const url = `${this.apiUrl}/update-patient/${id}`;
+    console.log('Updating patient at:', url, 'with data:', patientData);
     return this.http
-      .put<any>(`${this.apiUrl}/update-patient/${id}`, patientData, { // Adjust type if needed
+      .put<ApiResponse<any>>(url, patientData, {
         headers: this.getHeaders(),
       })
       .pipe(
@@ -117,13 +123,13 @@ export class PatientService {
           console.log('Update response:', response);
           const p = response.data;
           return {
-            idPublic: p.idPublic,
+            idPublic: id, // Use the provided ID
             name: p.name,
             email: p.email,
-            role: p.role as UserRole,
+            role: UserRole.Patient,
             doB: new Date(p.doB),
             ssn: p.ssn,
-            gender: p.gender as Gender,
+            gender: p.gender === 0 ? Gender.Male : Gender.Female,
             phoneNumber: p.phoneNumber,
             address: p.address,
             patientProfile: {

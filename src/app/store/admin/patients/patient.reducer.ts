@@ -6,20 +6,19 @@ import * as PatientActions from './patient.actions';
 export interface PatientState {
   patients: User[];
   loading: boolean;
+  success: boolean;
   error: string | null;
-  success: boolean; // Added to track successful operations
 }
 
 export const initialState: PatientState = {
   patients: [],
   loading: false,
-  error: null,
   success: false,
+  error: null,
 };
 
 export const patientReducer = createReducer(
   initialState,
-
   on(PatientActions.loadPatients, (state) => ({ ...state, loading: true, error: null, success: false })),
   on(PatientActions.loadPatientsSuccess, (state, { patients }) => ({
     ...state,
@@ -70,7 +69,19 @@ export const patientReducer = createReducer(
   on(PatientActions.updatePatient, (state) => ({ ...state, loading: true, error: null, success: false })),
   on(PatientActions.updatePatientSuccess, (state, { patient }) => ({
     ...state,
-    patients: state.patients.map((p) => (p.idPublic === patient.idPublic ? patient : p)),
+    patients: state.patients.map((p) =>
+      p.idPublic === patient.idPublic
+        ? {
+            ...p,
+            ...patient,
+            patientProfile: {
+              ...p.patientProfile,
+              ...patient.patientProfile,
+              userId: patient.patientProfile?.userId || p.patientProfile?.userId || '', // Fallback to ensure userId is a string
+            },
+          } as User // Type assertion to confirm it matches User
+        : p
+    ),
     loading: false,
     error: null,
     success: true,
