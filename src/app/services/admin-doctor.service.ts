@@ -23,7 +23,7 @@ export class DoctorService {
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxMCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtaW5AZ21haWwuY29tIiwiZXhwIjoxNzQ0MTk1NTUxLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.qnjpS5P_ucGXYFIG7nyY4sYUiEKkJjgvxvYO18BHJMo`
+      'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2MiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtaW5AYWRtaW4uY29tIiwiZXhwIjoxNzQ0MjA1NzUwLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.bfxXGP05ha-mw7AgRnnzveg8-8x8ey4rEO6dvG6gZcQ`
     });
   }
 
@@ -167,6 +167,49 @@ export class DoctorService {
           return undefined;
         }),
         catchError(this.handleError)
+      );
+  }
+
+  // Updated method to download doctor information as PDF directly
+  downloadDoctorPdf(doctorId: string, doctorName: string): Observable<boolean> {
+    if (!doctorId) {
+      return throwError(() => new Error('Doctor ID is required for PDF generation'));
+    }
+    
+    console.log(`Generating PDF for doctor with ID: ${doctorId}`);
+    
+    return this.http
+      .get(`${this.apiUrl}/generate-doctor-pdf/${doctorId}`, {
+        headers: new HttpHeaders({
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2MiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtaW5AYWRtaW4uY29tIiwiZXhwIjoxNzQ0MjA1NzUwLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.bfxXGP05ha-mw7AgRnnzveg8-8x8ey4rEO6dvG6gZcQ`
+        }),
+        responseType: 'blob'
+      })
+      .pipe(
+        map(response => {
+          console.log('PDF generated successfully');
+          
+          // Create a blob URL from the PDF data
+          const blob = new Blob([response], { type: 'application/pdf' });
+          const url = window.URL.createObjectURL(blob);
+          
+          // Create a temporary anchor element to trigger the download
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `Doctor_${doctorName}_Info.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          
+          // Clean up
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+          
+          return true; // Return success
+        }),
+        catchError(error => {
+          console.error('Error downloading PDF:', error);
+          return throwError(() => new Error('Failed to download doctor information: ' + error.message));
+        })
       );
   }
 }

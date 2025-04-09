@@ -5,7 +5,6 @@ import { ButtonModule } from 'primeng/button';
 import { DoctorService } from '../../../services/admin-doctor.service';
 import { User } from '../../../models/user.model';
 import { Router, RouterModule } from '@angular/router';
-import { DoctorAvailability } from '../../../models/doctor-availability.model';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -41,8 +40,6 @@ import { ConfirmationService } from 'primeng/api';
             <th>#</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Specialty</th>
-            <th>Working Days</th>
             <th>Actions</th>
           </tr>
         </ng-template>
@@ -51,8 +48,6 @@ import { ConfirmationService } from 'primeng/api';
             <td>{{i + 1}}</td>
             <td>{{doctor.name}}</td>
             <td>{{doctor.email}}</td>
-            <td>{{doctor.doctorProfile?.specialty}}</td>
-            <td>{{getWorkingDays(doctor.doctorProfile?.availabilities)}}</td>
             <td>
               <div class="flex gap-2">
                 <p-button 
@@ -61,17 +56,22 @@ import { ConfirmationService } from 'primeng/api';
                   styleClass="p-button-sm p-button-info px-6">
                 Details</p-button>
                 <p-button 
+                  icon="pi pi-download" 
+                  (onClick)="downloadDoctorPdf(doctor)" 
+                  styleClass="p-button-sm p-button-success px-6">
+                PDF</p-button>
+                <p-button 
                   icon="pi pi-trash" 
                   (onClick)="confirmDelete(doctor)" 
                   styleClass="p-button-sm p-button-danger px-6">
-                Delete </p-button>
+                Delete</p-button>
               </div>
             </td>
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="6" class="text-center p-4">
+            <td colspan="4" class="text-center p-4">
               No doctors found. Click "Add Doctor" to create one.
             </td>
           </tr>
@@ -175,12 +175,32 @@ export class DoctorManagementComponent implements OnInit {
     });
   }
 
-  getWorkingDays(availabilities?: DoctorAvailability[]): string {
-    if (!availabilities || availabilities.length === 0) return 'Not set';
-    
-    const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const days = availabilities.map(a => dayNames[a.dayOfWeek - 1]);
-    
-    return days.join(', ');
+  downloadDoctorPdf(doctor: User) {
+    if (!doctor.idPublic) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Doctor ID is missing'
+      });
+      return;
+    }
+
+    this.doctorService.downloadDoctorPdf(doctor.idPublic, doctor.name).subscribe({
+      next: (success) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Dr. ${doctor.name}'s information downloaded successfully`
+        });
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.message
+        });
+        console.error('Error downloading doctor PDF:', error);
+      }
+    });
   }
 }
