@@ -6,7 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component'
 import { DoctorDashboardComponent } from './components/doctor/doctor-dashboard.component'
 import { DoctorProfileComponent } from './components/doctor/doctor-profile.component'
 import { UpcomingAppointmentsComponent } from './components/doctor/upcoming-appointments.component'
-// import { PastAppointmentsComponent } from './components/doctor/past-appointments.component'
+import { PastAppointmentsComponent } from './components/doctor/past-appointments.component'
 
 export const routes: Routes = [
   {
@@ -16,7 +16,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: DoctorDashboardComponent },
       { path: 'profile', component: DoctorProfileComponent },
       { path: 'upcoming-appointments', component: UpcomingAppointmentsComponent },
-      // { path: 'past-appointments', component: PastAppointmentsComponent }
+      { path: 'past-appointments', component: PastAppointmentsComponent }
     ],
   },
   {
