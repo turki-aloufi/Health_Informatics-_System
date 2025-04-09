@@ -1,18 +1,40 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { DoctorManagementComponent } from './components/admin/doctor-management/doctor-management.component';
-import { DoctorFormComponent } from './components/admin/doctor-form/doctor-form.component';
-import { DashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
+import { NgModule } from '@angular/core'
+import { RouterModule, Routes } from '@angular/router'
+import { DoctorManagementComponent } from './components/admin/doctor-management/doctor-management.component'
+import { DoctorFormComponent } from './components/admin/doctor-form/doctor-form.component'
+import { DashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component'
+import { LoginComponent } from './components/auth/login/login.component'
+import { PatientFormComponent } from './components/admin/patient-form/patient-form.component'
+import { PatientManagementComponent } from './components/admin/patient-management/patient-management.component'
+import { RegisterComponent } from './components/auth/register/register.component'
 
 export const routes: Routes = [
-  { path: 'admin/dashboard', component: DashboardComponent },
-  { path: 'admin/doctor-management', component: DoctorManagementComponent },
-  { path: 'admin/doctor-form', component: DoctorFormComponent },
-  { path: 'admin/doctor-form/:id', component: DoctorFormComponent },
-];
+  {
+    path: 'doctor',
+    children: [{ path: 'dashboard', component: DashboardComponent }],
+  },
+  {
+    path: 'admin',
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'doctor-management', component: DoctorManagementComponent },
+      { path: 'doctor-form', component: DoctorFormComponent },
+      { path: 'doctor-form/:id', component: DoctorFormComponent },
+      { path: 'patients', component: PatientManagementComponent },
+      { path: 'patient-form', component: PatientFormComponent },
+      { path: 'patient-form/:id', component: PatientFormComponent },
+    ],
+  },
+  {
+    path: 'patient',
+    children: [{ path: 'dashboard', component: DashboardComponent }],
+  },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: '', redirectTo: 'admin/patients', pathMatch: 'full' },
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}
+  { path: 'auth/login', component: LoginComponent },
+
+  { path: '**', redirectTo: '/admin/dashboard' },
+]
