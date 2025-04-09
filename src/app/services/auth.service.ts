@@ -8,6 +8,7 @@ import {
   LoginResponse,
 } from '../models/auth.model'
 import { TokenService, TokenType } from './token.service'
+import { Router } from '@angular/router'
 
 @Injectable({
   providedIn: 'root',
@@ -18,22 +19,19 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null)
   public currentUser$ = this.currentUserSubject.asObservable()
 
-  constructor(private http: HttpClient, private tokenService: TokenService) {
-    const token = localStorage.getItem(TokenType.ACCESS_TOKEN)
+  constructor(
+    private http: HttpClient,
+    private tokenService: TokenService,
+    private router: Router,
+  ) {
+    const token = localStorage.getItem(TokenType.TOKEN)
     if (token) {
       this.loadCurrentUser().subscribe()
     }
   }
 
   login(loginData: LoginCredentials): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/Auth/login`, loginData).pipe(
-      tap(response => {
-        if (response && response.token) {
-          this.tokenService.setToken(TokenType.ACCESS_TOKEN, response.token)
-          this.loadCurrentUser().subscribe()
-        }
-      }),
-    )
+    return this.http.post<any>(`${this.apiUrl}/login`, loginData)
   }
 
   register(registerData: RegisterData): Observable<any> {
@@ -41,19 +39,21 @@ export class AuthService {
   }
 
   loadCurrentUser(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/Auth/current-user`).pipe(
+    return this.http.get<any>(`${this.apiUrl}/me`).pipe(
       tap(userData => {
         this.currentUserSubject.next(userData)
       }),
     )
   }
   logout(): void {
-    localStorage.removeItem('token')
+    localStorage.clear()
+
     this.currentUserSubject.next(null)
+    this.router.navigate(['/login'])
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token')
+    return localStorage.getItem(TokenType.TOKEN)
   }
   get currentUserValue(): any {
     return this.currentUserSubject.value

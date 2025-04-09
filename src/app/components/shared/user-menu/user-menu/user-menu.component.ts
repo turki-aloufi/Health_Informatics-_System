@@ -48,11 +48,7 @@ export class UserMenuComponent implements OnInit {
     // this.currentUser = this.authService.currentUser()
   }
 
-  // onLogout() {
-  //   this.authService.logout().subscribe({
-  //     next: value => {
-  //       this.router.navigate(['/'])
-  //     },
-  //   })
-  // }
+  onLogout() {
+    this.authService.logout()
+  }
 }

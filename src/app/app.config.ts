@@ -4,7 +4,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router'
 import Aura from '@primeng/themes/aura'
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { providePrimeNG } from 'primeng/config'
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
+import { provideHttpClient, withInterceptors } from '@angular/common/http'
 import {
   provideClientHydration,
   withEventReplay,
@@ -23,9 +23,10 @@ import { provideAngularSvgIcon } from 'angular-svg-icon'
 
 import { authFeature } from './store/auth/auth.reducer'
 import { AuthEffects } from './store/auth/auth.effects'
+import { authInterceptor } from './interceptors/auth.interceptor'
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptors([authInterceptor])),
 
     provideStore({ auth: authFeature.reducer }),
     provideEffects([AuthEffects]),

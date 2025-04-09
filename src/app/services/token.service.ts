@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 
 export enum TokenType {
-  ACCESS_TOKEN = 'token',
+  TOKEN = 'token',
 }
 
 @Injectable({

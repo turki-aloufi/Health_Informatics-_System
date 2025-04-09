@@ -10,6 +10,9 @@ import { MenuItem } from 'primeng/api'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 import { SvgIconComponent } from 'angular-svg-icon'
 import { LogoComponent } from '../../shared/logo/logo/logo.component'
+import { AuthService } from '@/app/services/auth.service'
+import { CurrentUser, User } from '@/app/models/user.model'
+import { Observable } from 'rxjs'
 
 interface ExtendedMenuItem extends MenuItem {
   routerLinkActiveOptions?: Record<string, any>
@@ -34,13 +37,22 @@ export class SidebarComponent {
   visible: boolean = true
   isMobile: boolean = false
   items = signal<ExtendedMenuItem[]>([])
+  currentUser: CurrentUser | null = null
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     public sidebarService: SidebarService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
+    this.authService.loadCurrentUser().subscribe({
+      next: data => {
+        this.currentUser = data
+      },
+    })
+
+    switch()
     this.items.set([
       {
         label: 'Dashboard',

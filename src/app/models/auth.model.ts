@@ -1,3 +1,5 @@
+import { User } from './user.model'
+
 // src/app/auth/models/auth.model.ts
 export interface LoginCredentials {
   email: string
@@ -28,5 +30,5 @@ export interface AuthState {
 
 export interface LoginResponse {
   token: string
-  userId: string
+  user: User
 }

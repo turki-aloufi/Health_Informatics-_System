@@ -9,7 +9,8 @@ import {
   loadAuthStateSuccess,
   loadAuthStateFailure,
 } from './auth.actions'
-import { jwtDecode } from 'jwt-decode' // Corrected import
+import { TokenType } from '@/app/services/token.service'
+import { UserRole } from '@/app/models/user.model'
 
 interface JwtPayload {
   role: string
@@ -47,19 +48,24 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess),
         tap(({ response }) => {
-          localStorage.setItem('authToken', response.token)
-          localStorage.setItem('userId', response.userId)
+          localStorage.setItem(TokenType.TOKEN, response.token)
+          if (response.user.id) localStorage.setItem('userId', response.user.id)
 
-          // Decode the token to get the user's role
-          let role = 'patient' // default role if decoding fails
-          try {
-            const decoded = jwtDecode<JwtPayload>(response.token) // Updated function name
-            if (decoded && decoded.role) {
-              role = decoded.role.toLowerCase()
-            }
-          } catch (e) {
-            console.error('Token decoding failed', e)
+          let role = ''
+          switch (response.user.role) {
+            case UserRole.Patient:
+              role = 'patient'
+              break
+            case UserRole.Doctor:
+              role = 'doctor'
+              break
+            case UserRole.Admin:
+              role = 'admin'
+              break
+            default:
+              role = 'Unknown'
           }
+
           localStorage.setItem('userRole', role)
 
           // Navigate based on the decoded role
@@ -73,7 +79,7 @@ export class AuthEffects {
   initAuth$ = createEffect(() =>
     of(null).pipe(
       map(() => {
-        const token = localStorage.getItem('authToken')
+        const token = localStorage.getItem(TokenType.TOKEN)
         const userId = localStorage.getItem('userId')
         const role = localStorage.getItem('userRole')
 
@@ -128,7 +134,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.logout),
         tap(() => {
-          localStorage.removeItem('authToken')
+          localStorage.removeItem(TokenType.TOKEN)
           localStorage.removeItem('userId')
           localStorage.removeItem('userRole')
           this.router.navigate(['/login'])
