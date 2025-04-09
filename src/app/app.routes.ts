@@ -1,22 +1,18 @@
-import { Routes } from '@angular/router'
-import { LoginComponent } from './components/auth/login/login.component'
-import { RegisterComponent } from './components/auth/register/register.component'
-import { DashboardComponent } from './dashboard/dashboard.component'
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { DoctorManagementComponent } from './components/admin/doctor-management/doctor-management.component';
+import { DoctorFormComponent } from './components/admin/doctor-form/doctor-form.component';
+import { DashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
-  {
-    path: 'doctor',
-    children: [{ path: 'dashboard', component: DashboardComponent }],
-  },
-  {
-    path: 'admin',
-    children: [{ path: 'dashboard', component: DashboardComponent }],
-  },
-  {
-    path: 'patient',
-    children: [{ path: 'dashboard', component: DashboardComponent }],
-  },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-]
+  { path: 'admin/dashboard', component: DashboardComponent },
+  { path: 'admin/doctor-management', component: DoctorManagementComponent },
+  { path: 'admin/doctor-form', component: DoctorFormComponent },
+  { path: 'admin/doctor-form/:id', component: DoctorFormComponent },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}
