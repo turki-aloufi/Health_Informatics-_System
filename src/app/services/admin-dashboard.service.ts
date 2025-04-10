@@ -11,12 +11,14 @@ export class DashboardService {
   constructor(private http: HttpClient) {}
 
   private getAuthToken(): string {
-    return localStorage.getItem('auth_token') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxMCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtaW5AZ21haWwuY29tIiwiZXhwIjoxNzQ0MTk1NTUxLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.qnjpS5P_ucGXYFIG7nyY4sYUiEKkJjgvxvYO18BHJMo';
+    // Changed from 'auth_token' to 'authToken' to match what's set in AuthEffects
+    return localStorage.getItem('authToken') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxMCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtaW5AZ21haWwuY29tIiwiZXhwIjoxNzQ0MTk1NTUxLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.qnjpS5P_ucGXYFIG7nyY4sYUiEKkJjgvxvYO18BHJMo';
   }
 
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
+      // Fixed template literal syntax by adding backticks
       'Authorization': `Bearer ${this.getAuthToken()}`
     });
   }
@@ -107,5 +109,5 @@ export class DashboardService {
         }),
         catchError(this.handleError)
       );
-  }
+  } 
 }

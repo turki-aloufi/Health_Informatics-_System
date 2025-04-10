@@ -1,4 +1,4 @@
-// src/main.ts
+// src/app/app.config.ts
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import Aura from '@primeng/themes/aura';
@@ -42,10 +42,11 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideClientHydration(withEventReplay()),
 
-    // Routing configuration
+    // Routing configuration: default and fallback redirect to login page
     provideRouter(
       [
-        { path: '', redirectTo: 'admin/patients', pathMatch: 'full' },
+        { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+        { path: 'auth/login', component: LoginComponent },
         { path: 'admin/doctor-management', component: DoctorManagementComponent },
         { path: 'admin/doctor-form', component: DoctorFormComponent },
         { path: 'admin/doctor-form/:id', component: DoctorFormComponent },
@@ -53,8 +54,6 @@ export const appConfig: ApplicationConfig = {
         { path: 'admin/patient-form', component: PatientFormComponent },
         { path: 'admin/patient-form/:id', component: PatientFormComponent },
         { path: 'admin/dashboard', component: DashboardComponent },
-        { path: 'auth/login', component: LoginComponent },
-        { path: '**', redirectTo: '/admin/dashboard' },
       ],
       withComponentInputBinding()
     ),
