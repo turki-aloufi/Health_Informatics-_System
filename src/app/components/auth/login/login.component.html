@@ -1,6 +1,6 @@
 <div class="flex justify-center items-center min-h-screen bg-gray-100">
   <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Sign In</h2>
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Log In</h2>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <!-- Email Field -->
@@ -76,7 +76,9 @@
     <!-- Link to Registration Page -->
     <p class="mt-6 text-center text-gray-600">
       Don't have an account?
-      <a routerLink="/register" class="text-blue-600 hover:underline"
+      <a
+        routerLink="/register"
+        class="text-blue-600 hover:underline cursor-pointer"
         >Create an account</a
       >
     </p>

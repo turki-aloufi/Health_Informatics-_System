@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core'
+import { Component, OnDestroy, signal } from '@angular/core'
 import { DrawerModule } from 'primeng/drawer'
 import { ButtonModule } from 'primeng/button'
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
@@ -12,7 +12,8 @@ import { SvgIconComponent } from 'angular-svg-icon'
 import { LogoComponent } from '../../shared/logo/logo/logo.component'
 import { AuthService } from '@/app/services/auth.service'
 import { CurrentUser, User, UserRole } from '@/app/models/user.model'
-import { Observable, Subscription } from 'rxjs'
+import { firstValueFrom, Observable, Subscription } from 'rxjs'
+import { TokenService, TokenType } from '@/app/services/token.service'
 
 interface ExtendedMenuItem extends MenuItem {
   routerLinkActiveOptions?: Record<string, any>
@@ -33,19 +34,18 @@ interface ExtendedMenuItem extends MenuItem {
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnDestroy {
   visible: boolean = true
   isMobile: boolean = false
   items = signal<ExtendedMenuItem[]>([])
   user?: User
+
   private userSubscription?: Subscription
   constructor(
     private breakpointObserver: BreakpointObserver,
     public sidebarService: SidebarService,
     private authService: AuthService,
-  ) {
-    authService.loadCurrentUser()
-  }
+  ) {}
 
   ngOnInit() {
     this.userSubscription = this.authService.currentUser$.subscribe(user => {
@@ -135,5 +135,12 @@ export class SidebarComponent {
 
   isSidebarOpen(): boolean {
     return this.sidebarService.isSidebarOpen()
+  }
+
+  ngOnDestroy() {
+    // Clean up subscription when component is destroyed
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe()
+    }
   }
 }
