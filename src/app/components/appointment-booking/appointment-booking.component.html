@@ -1,88 +1,97 @@
-<!-- src/app/features/appointment-booking/appointment-booking.component.html -->
-<div class="appointment-booking-container">
-    <h1>Book an Appointment</h1>
+<div class="min-h-screen bg-gray-100 p-6">
     
-    <!-- Doctor search section -->
-    <div class="search-section">
-      <h2>Step 1: Find a Doctor</h2>
-      <div class="search-box">
-        <input 
-          type="text" 
-          placeholder="Search by name, specialty or clinic" 
-          (input)="onSearchChange($event)"
-          class="search-input">
-      </div>
-      
-      <div class="doctors-list">
-        <div *ngIf="filteredDoctors.length === 0" class="no-results">
-          No doctors found matching your search.
-        </div>
-        
-        <div 
-          *ngFor="let doctor of filteredDoctors" 
-          class="doctor-card" 
-          [class.selected]="selectedDoctorId === doctor.doctorId"
-          (click)="selectDoctor(doctor.doctorId)">
-          <h3>{{ doctor.name }}</h3>
-          <p><strong>Specialty:</strong> {{ doctor.specialty }}</p>
-          <p><strong>Clinic:</strong> {{ doctor.clinic }}</p>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Appointment booking form -->
-    <div class="booking-form-section" *ngIf="selectedDoctorId">
-      <h2>Step 2: Select Date & Time</h2>
-      <form [formGroup]="bookingForm" (ngSubmit)="bookAppointment()">
-        <div class="form-group">
-          <label for="appointmentDate">Select Date:</label>
+      <!-- Step 1: Doctor Search -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-3">Step 1: Find a Doctor</h2>
+        <div class="mb-4">
           <input 
-            type="date" 
-            id="appointmentDate" 
-            formControlName="appointmentDate"
-            (change)="onDateChange($event)"
-            min="{{ today | date:'yyyy-MM-dd' }}">
-          <div *ngIf="bookingForm.get('appointmentDate')?.touched && bookingForm.get('appointmentDate')?.invalid" class="error">
-            Date is required
-          </div>
+            type="text" 
+            placeholder="Search by name, specialty or clinic" 
+            (input)="onSearchChange($event)"
+            class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
         </div>
-        
-        <div class="time-slots-section" *ngIf="selectedDate">
-          <h3>Available Time Slots:</h3>
-          <div *ngIf="availableSlots.length === 0" class="loading">
-            Loading available slots...
-          </div>
-          
-          <div class="time-slots-container">
-            <div 
-              *ngFor="let slot of availableSlots" 
-              class="time-slot" 
-              [class.selected]="bookingForm.get('appointmentTime')?.value === slot.split('T')[1]"
-              (click)="selectTimeSlot(slot)">
-              {{ slot | date:'shortTime' }}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ng-container *ngIf="filteredDoctors.length; else noDoctors">
+            <div *ngFor="let doctor of filteredDoctors" 
+              class="p-4 border border-gray-200 rounded cursor-pointer hover:bg-blue-50 transition-colors duration-150"
+              [class.bg-blue-100]="selectedDoctorId === doctor.doctorId"
+              (click)="selectDoctor(doctor.doctorId)">
+              <h3 class="font-bold text-lg">{{ doctor.name }}</h3>
+              <p class="text-sm text-gray-600">Specialty: {{ doctor.specialty }}</p>
+              <p class="text-sm text-gray-600">Clinic: {{ doctor.clinic }}</p>
+            </div>
+          </ng-container>
+          <ng-template #noDoctors>
+            <div class="text-center text-gray-500 col-span-full">
+              No doctors found matching your search.
+            </div>
+          </ng-template>
+        </div>
+      </div>
+  
+      <!-- Step 2: Booking Form (Only visible when a doctor is selected) -->
+      <ng-container *ngIf="selectedDoctorId">
+        <hr class="my-4 border-gray-300" />
+        <h2 class="text-xl font-semibold mb-4">Step 2: Select Date & Time</h2>
+        <form [formGroup]="bookingForm" (ngSubmit)="bookAppointment()">
+          <div class="mb-4">
+            <label for="appointmentDate" class="block text-gray-700 mb-2">Select Date:</label>
+            <input 
+              type="date" 
+              id="appointmentDate" 
+              formControlName="appointmentDate"
+              (change)="onDateChange($event)"
+              [min]="today | date:'yyyy-MM-dd'"
+              class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            <div *ngIf="bookingForm.get('appointmentDate')?.touched && bookingForm.get('appointmentDate')?.invalid" class="text-red-500 text-sm">
+              Date is required
             </div>
           </div>
-        </div>
+          
+          <!-- Available Time Slots -->
+          <div class="mb-4" *ngIf="selectedDate">
+            <h3 class="font-semibold mb-2">Available Time Slots:</h3>
+            <div *ngIf="availableSlots.length === 0" class="text-gray-500 mb-2">
+              Loading available slots...
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <div 
+                *ngFor="let slot of availableSlots" 
+                class="p-2 border border-gray-300 rounded text-center cursor-pointer hover:bg-blue-50 transition-colors duration-150"
+                [class.bg-blue-200]="bookingForm.get('appointmentTime')?.value === slot.split('T')[1]"
+                (click)="selectTimeSlot(slot)">
+                {{ slot | date:'shortTime' }}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Notes Input -->
+          <div class="mb-4">
+            <label for="notes" class="block text-gray-700 mb-2">Notes (Optional):</label>
+            <textarea 
+              id="notes" 
+              formControlName="notes" 
+              rows="3"
+              class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+          </div>
+          
+          <!-- Submit Button -->
+          <div>
+            <button 
+              type="submit" 
+              class="p-button p-component p-button-rounded p-button-success w-full"
+              [disabled]="bookingForm.invalid">
+              Book Appointment
+            </button>
+          </div>
+        </form>
         
-        <div class="form-group">
-          <label for="notes">Notes (Optional):</label>
-          <textarea id="notes" formControlName="notes" rows="3"></textarea>
+        <!-- Success & Error Messages -->
+        <div *ngIf="bookingError" class="mt-4 p-4 bg-red-100 text-red-700 rounded">
+          {{ bookingError }}
         </div>
-        
-        <div class="form-actions">
-          <button type="submit" class="book-button">
-            Book Appointment
-          </button>
-        </div>
-      </form>
-      
-      <div *ngIf="bookingSuccess" class="success-message">
-        Your appointment has been booked successfully!
-      </div>
-      
-      <div *ngIf="bookingError" class="error-message">
-        {{ bookingError }}
-      </div>
-    </div>
+      </ng-container>
+    
+    <!-- PrimeNG Toast for notifications -->
   </div>
   
