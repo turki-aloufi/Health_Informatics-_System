@@ -17,7 +17,7 @@ import { DoctorAvailability } from '@/app/models/doctor-availability.model'
   selector: 'app-doctor-management',
   template: `
     <div class="h-screen">
-      <p-card header="Doctors Management" styleClass="mb-4">
+      <p-card  styleClass="mb-4">
         <div class="mb-4 flex justify-between">
           <h2 class="text-xl font-semibold">Doctors List</h2>
           <p-button

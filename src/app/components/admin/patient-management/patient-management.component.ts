@@ -21,7 +21,7 @@ import { PatientState } from '../../../store/admin/patients/patient.reducer'
   selector: 'app-patient-management',
   template: `
     <div class="h-screen">
-      <p-card header="Patients Management" styleClass="mb-4">
+      <p-card  styleClass="mb-4">
         <div class="mb-4 flex justify-between ">
           <h2 class="text-xl font-semibold">Patients List</h2>
           <p-button

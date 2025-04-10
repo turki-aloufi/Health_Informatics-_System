@@ -16,7 +16,7 @@ import { AdminAppointmentsService, Appointment } from '../../../services/admin-a
   selector: 'app-admin-appointments',
   template: `
     <div class="h-screen">
-      <p-card header="Appointments Management" styleClass="mb-4">
+      <p-card  styleClass="mb-4">
         <div class="mb-4 flex justify-between">
           <h2 class="text-xl font-semibold">Appointments List</h2>
 
