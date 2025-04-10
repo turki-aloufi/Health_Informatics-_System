@@ -19,12 +19,8 @@
                 styleClass="mb-4 shadow-sm hover:shadow-md transition-shadow duration-300">
                 <div class="flex flex-col md:flex-row justify-between gap-4">
                     <div class="flex-1">
-                        <h3 class="font-medium mb-2">Appointment ID: {{ appointment.appointmentId }}</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 mb-3">
-                            <div>
-                                <p class="text-surface-600 text-sm">Patient ID: </p>
-                                <p>{{ appointment.patientId }}</p>
-                            </div>
+                         
                             <div>
                                 <p class="text-surface-600 text-sm">Patient: </p>
                                 <p>{{ appointment.patientName }} ({{ appointment.patientEmail }})</p>
