@@ -34,7 +34,7 @@ export class AuthService {
     private tokenService: TokenService,
     private router: Router,
   ) {
-    this.initializeAuth()
+    // this.initializeAuth()
   }
 
   private initializeAuth(): void {
