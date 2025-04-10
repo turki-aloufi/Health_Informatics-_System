@@ -14,6 +14,8 @@ import { DoctorProfileComponent } from './components/doctor/doctor-profile.compo
 import { UpcomingAppointmentsComponent } from './components/doctor/upcoming-appointments.component'
 import { PastAppointmentsComponent } from './components/doctor/past-appointments.component'
 import { PatientDashboardComponent } from './components/patient/patient-dashboard/patient-dashboard.component'
+import { AdminAppointmentsComponent } from './components/admin/admin-appointments/admin-appointments.component'
+import { AdminAppointmentFormComponent } from './components/admin/admin-appointment-form/admin-appointment-form.component'
 
 export const routes: Routes = [
   {
@@ -36,6 +38,9 @@ export const routes: Routes = [
       { path: 'patients', component: PatientManagementComponent },
       { path: 'patient-form', component: PatientFormComponent },
       { path: 'patient-form/:id', component: PatientFormComponent },
+      { path: 'admin-appointments', component: AdminAppointmentsComponent },
+      { path: 'admin-appointment-form', component: AdminAppointmentFormComponent },
+      { path: 'admin-appointment-form/:id', component: AdminAppointmentFormComponent },
     ],
   },
   {

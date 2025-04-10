@@ -26,7 +26,7 @@ import { AuthEffects } from './store/auth/auth.effects'
 import { authInterceptor } from './interceptors/auth.interceptor'
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient( withInterceptors([authInterceptor])),
 
     provideStore({ auth: authFeature.reducer }),
     provideEffects([AuthEffects]),
