@@ -13,6 +13,7 @@ import { DoctorDashboardComponent } from './components/doctor/doctor-dashboard.c
 import { DoctorProfileComponent } from './components/doctor/doctor-profile.component'
 import { UpcomingAppointmentsComponent } from './components/doctor/upcoming-appointments.component'
 import { PastAppointmentsComponent } from './components/doctor/past-appointments.component'
+import { PatientDashboardComponent } from './components/patient/patient-dashboard/patient-dashboard.component'
 
 export const routes: Routes = [
   {
@@ -39,8 +40,9 @@ export const routes: Routes = [
   },
   {
     path: 'patient',
-    children: [{ path: 'dashboard', component: DashboardComponent },
-      { path: 'booking', component: AppointmentBookingComponent }
+    children: [
+      { path: 'dashboard', component: PatientDashboardComponent },
+      { path: 'booking', component: AppointmentBookingComponent },
     ],
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' },

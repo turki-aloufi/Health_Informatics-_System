@@ -39,8 +39,8 @@ export class SidebarComponent implements OnDestroy {
   isMobile: boolean = false
   items = signal<ExtendedMenuItem[]>([])
   user?: User
-
   private userSubscription?: Subscription
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     public sidebarService: SidebarService,
@@ -99,13 +99,14 @@ export class SidebarComponent implements OnDestroy {
       case UserRole.Patient:
         this.items.set([
           {
-            label: 'Appoiments ',
-            icon: 'assets/images/personal_injury_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).svg',
-            routerLink: 'admin/patients/',
+            label: 'Appointments ',
+            icon: 'assets/images/view_cozy_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
+            routerLink: 'patient/dashboard/',
             routerLinkActiveOptions: { exact: true },
-          },     {
+          },
+          {
             label: 'Booking ',
-            icon: 'assets/images/personal_injury_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).svg',
+            icon: 'assets/images/confirmation_number_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
             routerLink: '/patient/booking',
             routerLinkActiveOptions: { exact: true },
           },
