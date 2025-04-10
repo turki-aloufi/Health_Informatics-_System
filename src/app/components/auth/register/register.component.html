@@ -1,147 +1,254 @@
-<div class="register-container" >
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <!-- Name Field -->
-      <div class="form-group">
-        <label for="name">Full Name</label>
-        <input 
-          id="name"
-          type="text" 
-          formControlName="name" 
-          placeholder="Enter your full name"
-        >
-        <ng-container *ngIf="registerForm.get('name') as nameCtrl">
-          <div *ngIf="nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)" class="error-message">
-            <div *ngIf="nameCtrl.errors?.['required']">Name is required</div>
-          </div>
-        </ng-container>
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl my-8">
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">
+      Create an Account
+    </h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      <!-- Two columns for desktop, one column for mobile -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Name Field -->
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700 mb-1"
+            >Full Name</label
+          >
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            placeholder="Enter your full name"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <ng-container *ngIf="registerForm.get('name') as nameCtrl">
+            <div
+              *ngIf="nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)"
+              class="mt-1 text-sm text-red-600"
+            >
+              <div *ngIf="nameCtrl.errors?.['required']">Name is required</div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Email Field -->
+        <div>
+          <label
+            for="email"
+            class="block text-sm font-medium text-gray-700 mb-1"
+            >Email</label
+          >
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <ng-container *ngIf="registerForm.get('email') as emailCtrl">
+            <div
+              *ngIf="
+                emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)
+              "
+              class="mt-1 text-sm text-red-600"
+            >
+              <div *ngIf="emailCtrl.errors?.['required']">
+                Email is required
+              </div>
+              <div *ngIf="emailCtrl.errors?.['email']">
+                Invalid email format
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <label
+            for="password"
+            class="block text-sm font-medium text-gray-700 mb-1"
+            >Password</label
+          >
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <ng-container *ngIf="registerForm.get('password') as passwordCtrl">
+            <div
+              *ngIf="
+                passwordCtrl.invalid &&
+                (passwordCtrl.dirty || passwordCtrl.touched)
+              "
+              class="mt-1 text-sm text-red-600"
+            >
+              <div *ngIf="passwordCtrl.errors?.['required']">
+                Password is required
+              </div>
+              <div *ngIf="passwordCtrl.errors?.['minlength']">
+                Password must be at least 6 characters
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Date of Birth -->
+        <div>
+          <label for="doB" class="block text-sm font-medium text-gray-700 mb-1"
+            >Date of Birth</label
+          >
+          <input
+            id="doB"
+            type="date"
+            formControlName="doB"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <ng-container *ngIf="registerForm.get('doB') as doBCtrl">
+            <div
+              *ngIf="doBCtrl.invalid && (doBCtrl.dirty || doBCtrl.touched)"
+              class="mt-1 text-sm text-red-600"
+            >
+              <div *ngIf="doBCtrl.errors?.['required']">
+                Date of Birth is required
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- SSN -->
+        <div>
+          <label for="ssn" class="block text-sm font-medium text-gray-700 mb-1"
+            >SSN</label
+          >
+          <input
+            id="ssn"
+            type="text"
+            formControlName="ssn"
+            placeholder="Enter your SSN"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <ng-container *ngIf="registerForm.get('ssn') as ssnCtrl">
+            <div
+              *ngIf="ssnCtrl.invalid && (ssnCtrl.dirty || ssnCtrl.touched)"
+              class="mt-1 text-sm text-red-600"
+            >
+              <div *ngIf="ssnCtrl.errors?.['required']">SSN is required</div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Gender -->
+        <div>
+          <label
+            for="gender"
+            class="block text-sm font-medium text-gray-700 mb-1"
+            >Gender</label
+          >
+          <select
+            id="gender"
+            formControlName="gender"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option *ngFor="let gender of genderOptions" [value]="gender">
+              {{ gender }}
+            </option>
+          </select>
+          <ng-container *ngIf="registerForm.get('gender') as genderCtrl">
+            <div
+              *ngIf="
+                genderCtrl.invalid && (genderCtrl.dirty || genderCtrl.touched)
+              "
+              class="mt-1 text-sm text-red-600"
+            >
+              <div *ngIf="genderCtrl.errors?.['required']">
+                Gender is required
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Phone Number -->
+        <div>
+          <label
+            for="phoneNumber"
+            class="block text-sm font-medium text-gray-700 mb-1"
+            >Phone Number</label
+          >
+          <input
+            id="phoneNumber"
+            type="tel"
+            formControlName="phoneNumber"
+            placeholder="Enter your phone number"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <ng-container *ngIf="registerForm.get('phoneNumber') as phoneCtrl">
+            <div
+              *ngIf="
+                phoneCtrl.invalid && (phoneCtrl.dirty || phoneCtrl.touched)
+              "
+              class="mt-1 text-sm text-red-600"
+            >
+              <div *ngIf="phoneCtrl.errors?.['required']">
+                Phone Number is required
+              </div>
+            </div>
+          </ng-container>
+        </div>
       </div>
-  
-      <!-- Email Field -->
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input 
-          id="email"
-          type="email" 
-          formControlName="email" 
-          placeholder="Enter your email"
+
+      <!-- Address - Full Width -->
+      <div>
+        <label
+          for="address"
+          class="block text-sm font-medium text-gray-700 mb-1"
+          >Address</label
         >
-        <ng-container *ngIf="registerForm.get('email') as emailCtrl">
-          <div *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)" class="error-message">
-            <div *ngIf="emailCtrl.errors?.['required']">Email is required</div>
-            <div *ngIf="emailCtrl.errors?.['email']">Invalid email format</div>
-          </div>
-        </ng-container>
-      </div>
-  
-      <!-- Password Field -->
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input 
-          id="password"
-          type="password" 
-          formControlName="password" 
-          placeholder="Enter your password"
-        >
-        <ng-container *ngIf="registerForm.get('password') as passwordCtrl">
-          <div *ngIf="passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)" class="error-message">
-            <div *ngIf="passwordCtrl.errors?.['required']">Password is required</div>
-            <div *ngIf="passwordCtrl.errors?.['minlength']">Password must be at least 6 characters</div>
-          </div>
-        </ng-container>
-      </div>
-  
-      <!-- Date of Birth -->
-      <div class="form-group">
-        <label for="doB">Date of Birth</label>
-        <input 
-          id="doB"
-          type="date" 
-          formControlName="doB"
-        >
-        <ng-container *ngIf="registerForm.get('doB') as doBCtrl">
-          <div *ngIf="doBCtrl.invalid && (doBCtrl.dirty || doBCtrl.touched)" class="error-message">
-            <div *ngIf="doBCtrl.errors?.['required']">Date of Birth is required</div>
-          </div>
-        </ng-container>
-      </div>
-  
-      <!-- SSN -->
-      <div class="form-group">
-        <label for="ssn">SSN</label>
-        <input 
-          id="ssn"
-          type="text" 
-          formControlName="ssn" 
-          placeholder="Enter your SSN"
-        >
-        <ng-container *ngIf="registerForm.get('ssn') as ssnCtrl">
-          <div *ngIf="ssnCtrl.invalid && (ssnCtrl.dirty || ssnCtrl.touched)" class="error-message">
-            <div *ngIf="ssnCtrl.errors?.['required']">SSN is required</div>
-          </div>
-        </ng-container>
-      </div>
-  
-      <!-- Gender -->
-      <div class="form-group">
-        <label for="gender">Gender</label>
-        <select 
-          id="gender"
-          formControlName="gender"
-        >
-          <option *ngFor="let gender of genderOptions" [value]="gender">
-            {{ gender }}
-          </option>
-        </select>
-        <ng-container *ngIf="registerForm.get('gender') as genderCtrl">
-          <div *ngIf="genderCtrl.invalid && (genderCtrl.dirty || genderCtrl.touched)" class="error-message">
-            <div *ngIf="genderCtrl.errors?.['required']">Gender is required</div>
-          </div>
-        </ng-container>
-      </div>
-  
-      <!-- Phone Number -->
-      <div class="form-group">
-        <label for="phoneNumber">Phone Number</label>
-        <input 
-          id="phoneNumber"
-          type="tel" 
-          formControlName="phoneNumber" 
-          placeholder="Enter your phone number"
-        >
-        <ng-container *ngIf="registerForm.get('phoneNumber') as phoneCtrl">
-          <div *ngIf="phoneCtrl.invalid && (phoneCtrl.dirty || phoneCtrl.touched)" class="error-message">
-            <div *ngIf="phoneCtrl.errors?.['required']">Phone Number is required</div>
-          </div>
-        </ng-container>
-      </div>
-  
-      <!-- Address -->
-      <div class="form-group">
-        <label for="address">Address</label>
-        <input 
+        <input
           id="address"
-          type="text" 
-          formControlName="address" 
+          type="text"
+          formControlName="address"
           placeholder="Enter your address"
-        >
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
         <ng-container *ngIf="registerForm.get('address') as addressCtrl">
-          <div *ngIf="addressCtrl.invalid && (addressCtrl.dirty || addressCtrl.touched)" class="error-message">
-            <div *ngIf="addressCtrl.errors?.['required']">Address is required</div>
+          <div
+            *ngIf="
+              addressCtrl.invalid && (addressCtrl.dirty || addressCtrl.touched)
+            "
+            class="mt-1 text-sm text-red-600"
+          >
+            <div *ngIf="addressCtrl.errors?.['required']">
+              Address is required
+            </div>
           </div>
         </ng-container>
       </div>
-  
-      <button 
-        type="submit" 
-        [disabled]="registerForm.invalid"
-      >
-        Register
-      </button>
-  
-      <div *ngIf="authState$ | async as authState" class="error-container">
-        <p *ngIf="authState.error" class="error-message">
+
+      <div class="flex justify-center mt-6">
+        <button
+          type="submit"
+          [disabled]="registerForm.invalid"
+          class="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Register
+        </button>
+      </div>
+
+      <div *ngIf="authState$ | async as authState" class="mt-4">
+        <p *ngIf="authState.error" class="text-center text-red-600">
           {{ authState.error }}
         </p>
       </div>
+
+      <!-- Link to Login Page -->
+      <p class="mt-6 text-center text-gray-600">
+        Already have an account?
+        <a
+          routerLink="/login"
+          class="text-blue-600 hover:underline cursor-pointer"
+          >Sign in</a
+        >
+      </p>
     </form>
   </div>
+</div>

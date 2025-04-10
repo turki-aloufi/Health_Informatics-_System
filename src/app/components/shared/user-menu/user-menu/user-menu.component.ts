@@ -20,7 +20,6 @@ import { User } from '@/app/models/user.model'
     AvatarModule,
     ButtonModule,
     CommonModule,
-    RouterLink,
     MenuModule,
     DropdownModule,
     CommonModule,
@@ -45,13 +44,7 @@ export class UserMenuComponent implements OnInit, OnDestroy {
       this.user = user
     })
 
-    this.menuItem = [
-      {
-        label: 'general.profile',
-        icon: 'assets/images/person_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg',
-        routerLink: '/profile',
-      },
-    ]
+    this.menuItem = []
     // this.currentUser = this.authService.currentUser()
   }
 

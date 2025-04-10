@@ -22,7 +22,6 @@
       </div>
     </div>
 
-    <hr class="mt-2 border-t-2 border-surface rounded-border" />
     <div class="text-start">
       <ul class="menu fill-current text-sm text-muted-color">
         <!-- @if (currentUser) {
@@ -36,25 +35,6 @@
           </p-button>
         </li>
         } -->
-        @for (item of menuItem; track $index) {
-
-        <li>
-          <p-button
-            dir="auto"
-            [text]="true"
-            severity="secondary"
-            [routerLink]="item.routerLink"
-            styleClass="px-0 py-2 w-full flex gap-2 justify-start"
-          >
-            <svg-icon
-              class="fill-current text-muted-color"
-              [svgClass]="'w-5 h-5'"
-              [src]="item.icon!"
-            ></svg-icon>
-            <span class="text-sm text-muted-color"> {{ item.label! }}</span>
-          </p-button>
-        </li>
-        }
       </ul>
     </div>
     <hr class="mt-2 border-t-2 border-surface rounded-border" />

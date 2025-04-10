@@ -8,7 +8,7 @@ import {
 } from '@angular/forms'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
-import { Router } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 
 import { AuthActions } from '../../../store/auth/auth.actions'
 import { AuthState } from '../../../models/auth.model'
@@ -19,7 +19,13 @@ import { ButtonModule } from 'primeng/button'
   selector: 'app-login',
   templateUrl: './login.component.html',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    ButtonModule,
+    RouterLink,
+  ],
 })
 export class LoginComponent {
   loginForm: FormGroup
