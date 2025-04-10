@@ -2,10 +2,10 @@ import { DoctorProfile } from "./doctor-profile.model";
 import { PatientProfile } from "./patient-profile.model";
 
 export enum AppointmentStatus {
-    Scheduled = 'Scheduled',
-    Completed = 'Completed',
-    Cancelled = 'Cancelled'
-  }
+  Scheduled = 0,
+  Completed = 1,
+  Cancelled = 2
+}
   
   export interface Appointment {
     appointmentId?: string;
@@ -17,4 +17,8 @@ export enum AppointmentStatus {
     notes?: string;
     patientProfile?: PatientProfile;
     doctorProfile?: DoctorProfile;
+    patientName?: string;
+  patientEmail?: string;
+  patientPhone?: string;
+  patientGender?: string;
   }

@@ -26,19 +26,28 @@
                                 <p>{{ appointment.patientId }}</p>
                             </div>
                             <div>
+                                <p class="text-surface-600 text-sm">Patient: </p>
+                                <p>{{ appointment.patientName }} ({{ appointment.patientEmail }})</p>
+                            </div>
+                            <div *ngIf="appointment.patientPhone">
+                                <p class="text-surface-600 text-sm">Phone: </p>
+                                <p>{{ appointment.patientPhone }}</p>
+                            </div>
+                            <div>
                                 <p class="text-surface-600 text-sm">Date & Time: </p>
                                 <p>{{ appointment.appointmentDateTime | date:'medium' }}</p>
                             </div>
                             <div>
                                 <p class="text-surface-600 text-sm">Status: </p>
-                                <p-tag [value]="getStatusDisplay(appointment.status)" [severity]="getStatusSeverity(appointment.status)"></p-tag>
+                                <p-tag [value]="getStatusDisplay(appointment.status)"
+                                    [severity]="getStatusSeverity(appointment.status)"></p-tag>
                             </div>
                         </div>
                     </div>
 
                     <div class="flex items-start">
                         <p-button (onClick)="toggleNotes(appointment)"
-                            [label]="appointment === selectedAppointment ? 'Close' : 'Add Notes'"
+                            [label]="appointment === selectedAppointment ? 'Close' : 'Add Notes & Update Status'"
                             [severity]="appointment === selectedAppointment ? 'secondary' : 'primary'"
                             [outlined]="appointment === selectedAppointment"></p-button>
                     </div>
@@ -51,7 +60,18 @@
                         <label for="appointment-notes" class="block mb-1 font-medium">Notes</label>
                         <textarea id="appointment-notes" pInputTextarea [(ngModel)]="appointment.notes" class="w-full"
                             rows="4" name="notes"></textarea>
-
+                            <div class="mt-4">
+                                <label class="block text-surface-700 mb-2">Change Status:</label>
+                                <select [(ngModel)]="appointment.status" class="p-2 border rounded w-full max-w-xs">
+                                  <option [value]=0>Scheduled</option>
+                                  <option [value]=1>Completed</option>
+                                  <option [value]=2>Cancelled</option>
+                                </select>
+                              
+                                <div class="flex justify-end mt-3">
+                                  <p-button label="Update Status" severity="warn" (onClick)="updateStatus(appointment)"></p-button>
+                                </div>
+                              </div>
                         <div class="flex justify-end gap-2 mt-3">
                             <p-button (onClick)="viewPatientHistory(appointment)" label="View Patient History"
                                 severity="secondary" [outlined]="true"></p-button>
@@ -66,6 +86,8 @@
                             <p class="text-sm text-surface-600 mb-1">{{ note.appointmentDateTime | date:'medium' }}</p>
                             <p>{{ note.notes }}</p>
                         </div>
+                        
+                          
                     </div>
                 </div>
             </p-card>

@@ -16,7 +16,7 @@ export interface DashboardStats {
   providedIn: 'root'
 })
 export class DoctorService {
-  private apiUrl = 'https://localhost:7060'; // Update with your actual API URL
+  private apiUrl = 'http://localhost:5098'; // Update with your actual API URL
 
   constructor(private http: HttpClient) {}
 
@@ -105,4 +105,15 @@ updateAppointmentNotes(appointmentId: string, notes: string): Observable<any> {
       })
     );
   }
+// doctor.service.ts
+updateAppointmentStatus(appointmentId: string, status: AppointmentStatus | number): Observable<any> {
+  const statusValue = Number(status);
+  return this.http.put(
+    `${this.apiUrl}/api/DoctorProfile/appointments/public/${appointmentId}/status`,
+    { status: statusValue }, 
+    { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+  );
+}
+
+
 }
