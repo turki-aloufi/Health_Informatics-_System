@@ -6,7 +6,31 @@
   (onHide)="closeCallback($event)"
   *ngIf="isMobile"
 >
-  <ng-container *ngTemplateOutlet="sidebarContent"></ng-container>
+  <ng-template #headless>
+    <div class="flex items-center justify-between w-full py-2 px-4">
+      <a
+        class="flex items-center gap-4 hover:opacity-80 transition-opacity"
+        routerLink="/staff"
+        aria-label="Staff Dashboard"
+      >
+        <div class="flex items-center gap-4">
+          <app-logo [width]="36"></app-logo>
+          <span class="font-bold text-lg text-color whitespace-nowrap">{{
+            'Health Clinic'
+          }}</span>
+        </div>
+      </a>
+      <p-button [rounded]="true" [text]="true" (onClick)="closeSidebar()">
+        <svg-icon
+          [src]="
+            '/assets/images/close_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg'
+          "
+          svgClass="fill-current text-color "
+        ></svg-icon>
+      </p-button>
+    </div>
+    <ng-container *ngTemplateOutlet="sidebarContent"></ng-container>
+  </ng-template>
 </p-drawer>
 
 <div class="desktop-sidebar" *ngIf="!isMobile && sidebarService.isOpen()">
@@ -18,9 +42,26 @@
     [ngClass]="{
   'w-[100%] md:w-72': isSidebarOpen(),
   'w-0': !isSidebarOpen() ,
+  'pt-3': !isMobile ,
 }"
     class="transition-all sticky h-full duration-300 ease-in-out bg-content-background overflow-hidden"
   >
+    @if (!isMobile) {
+    <div class="flex items-center justify-between w-full py-2 px-4">
+      <a
+        class="flex items-center gap-4 hover:opacity-80 transition-opacity"
+        routerLink="/staff"
+        aria-label="Staff Dashboard"
+      >
+        <div class="flex items-center gap-4">
+          <app-logo [width]="36"></app-logo>
+          <span class="font-bold text-lg text-color whitespace-nowrap">{{
+            'Health Clinic'
+          }}</span>
+        </div>
+      </a>
+    </div>
+    }
     <div
       class="flex h-full w-full flex-col justify-between p-3 transition-all medium:items-center"
     >
@@ -39,7 +80,7 @@
                   >
                     <svg-icon
                       [src]="item.icon"
-                      class="transition-transform duration-300 fill-current text-muted-color"
+                      class="transition-transform duration-300 fill-current"
                     ></svg-icon>
                     @if (isSidebarOpen()) {
                     <span

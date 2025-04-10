@@ -19,11 +19,11 @@
   padding-bottom: 0.5rem;
   font-size: 1rem;
   transition: all;
-  color: var(--p-muted-color);
+  color: var(--p-surface-400);
 }
 
 .sidebar-items:hover {
-  background-color: var(--p-emphasis-background);
+  background-color: var(--color-sky-100);
 }
 
 @media (min-width: 768px) {
@@ -38,10 +38,6 @@
   }
 }
 
-.p-menuitem-text {
-  color: var(--p-surface-600);
-}
-
 .sidebar-items svg-icon svg {
   height: 1.63rem;
   width: 1.63rem;
@@ -51,7 +47,7 @@
 }
 
 .active {
-  background-color: var(--p-content-hover-background);
+  background-color: var(--color-sky-200);
   transition: all;
 }
 
@@ -75,7 +71,7 @@ svg-icon.logout-icon svg:hover {
   fill: var(--p-primary-color);
 }
 
-.p-panelmenu-panel {
+::ng-deep .p-panelmenu-panel {
   background: none;
   border: none;
   border-radius: 0;

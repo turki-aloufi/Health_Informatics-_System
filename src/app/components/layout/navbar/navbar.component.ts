@@ -4,10 +4,20 @@ import { Component, signal } from '@angular/core'
 import { ButtonModule } from 'primeng/button'
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { SvgIconComponent } from 'angular-svg-icon'
+import { PopoverModule } from 'primeng/popover'
+import { UserMenuComponent } from '../../shared/user-menu/user-menu/user-menu.component'
+import { OverlayBadgeModule } from 'primeng/overlaybadge'
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule, ButtonModule, SvgIconComponent],
+  imports: [
+    CommonModule,
+    ButtonModule,
+    SvgIconComponent,
+    PopoverModule,
+    UserMenuComponent,
+    OverlayBadgeModule,
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })

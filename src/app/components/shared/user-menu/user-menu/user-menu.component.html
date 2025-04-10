@@ -1,0 +1,79 @@
+<div class="mb-1">
+  <div class="flex w-60 flex-col text-center">
+    <div
+      class="flex w-full items-center justify-start overflow-hidden rounded-border"
+    >
+      <div class="relative h-10 w-10">
+        <img
+          src="assets/images/default-avatar.png "
+          class="dark:brightness-95"
+        />
+      </div>
+
+      <div
+        class="ms-4 flex w-36 flex-col overflow-hidden whitespace-nowrap text-start xl:w-40"
+      >
+        <p class="text-sm font-semibold leading-6 text-color">
+          {{ user?.name }}
+        </p>
+        <span class="text-sm text-muted-color">
+          {{ user?.email ?? '-' }}
+        </span>
+      </div>
+    </div>
+
+    <hr class="mt-2 border-t-2 border-surface rounded-border" />
+    <div class="text-start">
+      <ul class="menu fill-current text-sm text-muted-color">
+        <!-- @if (currentUser) {
+        <li>
+          <p-button
+            dir="auto"
+            [severity]="'secondary'"
+            styleClass=" w-full flex gap-2 justify-start"
+          >
+            <span class="text-sm"> {{ 'admin.switch_to_store'  }}</span>
+          </p-button>
+        </li>
+        } -->
+        @for (item of menuItem; track $index) {
+
+        <li>
+          <p-button
+            dir="auto"
+            [text]="true"
+            severity="secondary"
+            [routerLink]="item.routerLink"
+            styleClass="px-0 py-2 w-full flex gap-2 justify-start"
+          >
+            <svg-icon
+              class="fill-current text-muted-color"
+              [svgClass]="'w-5 h-5'"
+              [src]="item.icon!"
+            ></svg-icon>
+            <span class="text-sm text-muted-color"> {{ item.label! }}</span>
+          </p-button>
+        </li>
+        }
+      </ul>
+    </div>
+    <hr class="mt-2 border-t-2 border-surface rounded-border" />
+    <p-button
+      class="mt-2 flex items-center justify-start"
+      dir="auto"
+      [text]="true"
+      severity="secondary"
+      (onClick)="onLogout()"
+      styleClass="px-1 py-2 w-full flex gap-2 justify-start"
+    >
+      <svg-icon
+        class="rtl-icon fill-current text-muted-color"
+        [svgClass]="'w-5 h-5'"
+        [src]="
+          'assets/images/logout_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg'
+        "
+      ></svg-icon>
+      <span class="text-sm text-muted-color"> {{ 'logout' }}</span>
+    </p-button>
+  </div>
+</div>

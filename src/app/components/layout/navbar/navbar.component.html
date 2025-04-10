@@ -4,7 +4,7 @@
     'border-surface':   (isScrolled() ),
   }"
 >
-  <nav class="flex h-16 items-center px-2 medium:px-10">
+  <nav class="flex h-16 items-center px-2 md:px-4">
     @if (!sideBarOpen()) {
     <div class="flex items-center gap-2">
       <button
@@ -15,41 +15,37 @@
           [src]="
             '/assets/images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg'
           "
-          class="fill-current text-color"
-          svgClass="h-6 w-6"
+          svgClass="fill-current text-color "
         ></svg-icon>
       </button>
-    </div>
-    }@else {
-    <div class="flex items-center">
-      <a
-        class="flex items-center gap-4 hover:opacity-80 transition-opacity"
-        routerLink="/staff"
-        aria-label="Staff Dashboard"
-      >
-        <div class="flex items-center gap-4">
-          <!-- <app-logo [width]="36"></app-logo> -->
-          <!-- <span class="hidden medium:inline-flex whitespace-nowrap">{{
-                'app.name' | translate
-              }}</span> -->
-        </div>
-      </a>
     </div>
     }
 
     <!-- Right Section: User Menu -->
-    <!-- <p-popover
+    <p-popover
       #popover
       id="my-element"
       verticalAlign="below"
       styleClass=" before:hidden after:hidden"
     >
       <app-user-menu></app-user-menu>
-    </p-popover> -->
-    <div class="ms-auto flex gap-4 justify-end items-center">
-      <p-button severity="secondary" styleClass="text-sm "
-        >تسجيل الدخول</p-button
-      >
+    </p-popover>
+
+    <div
+      (click)="popover.toggle($event)"
+      class="hover:bg-content-hover-background ms-auto p-2 rounded-full cursor-pointer"
+    >
+      <div class="relative">
+        <p-overlaybadge
+          severity="success"
+          styleClass="top-[unset] bottom-0 right-[unset] left-0 translate-x-[unset] translate-y-[unset]"
+        >
+          <img
+            src="/assets/images/default-avatar.png"
+            class="rounded-full w-9 h-9 object-cover dark:brightness-95"
+          />
+        </p-overlaybadge>
+      </div>
     </div>
   </nav>
 </header>

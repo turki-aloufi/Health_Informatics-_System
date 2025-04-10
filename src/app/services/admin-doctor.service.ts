@@ -1,94 +1,95 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, map, throwError } from 'rxjs';
-import { User, Gender, UserRole } from '../models/user.model';
+import { Injectable } from '@angular/core'
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http'
+import { Observable, catchError, map, throwError } from 'rxjs'
+import { User, Gender, UserRole } from '../models/user.model'
+import { TokenType } from './token.service'
 
 interface ApiResponse<T> {
-  msg: string;
-  data: T;
+  msg: string
+  data: T
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class DoctorService {
-  private apiUrl = 'http://localhost:5098/api/AdminDoctors';
+  private apiUrl = 'http://localhost:5098/api/AdminDoctors'
 
   constructor(private http: HttpClient) {}
 
   private getAuthToken(): string {
-    return localStorage.getItem('auth_token') || '';
+    return localStorage.getItem(TokenType.TOKEN) || ''
   }
 
-  private getHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2MiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtaW5AYWRtaW4uY29tIiwiZXhwIjoxNzQ0MjA1NzUwLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.bfxXGP05ha-mw7AgRnnzveg8-8x8ey4rEO6dvG6gZcQ`
-    });
-  }
+  // private getHeaders(): HttpHeaders {
+  //   return new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxMCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtaW5AZ21haWwuY29tIiwiZXhwIjoxNzQ0MTk1NTUxLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.qnjpS5P_ucGXYFIG7nyY4sYUiEKkJjgvxvYO18BHJMo`
+  //   });
+  // }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error('API Error Response:', error);
-    
-    let errorMessage = 'An unknown error occurred';
-    
+    console.error('API Error Response:', error)
+
+    let errorMessage = 'An unknown error occurred'
+
     if (error.error) {
-      console.log('Error details:', error.error);
-      
+      console.log('Error details:', error.error)
+
       if (typeof error.error === 'string') {
-        errorMessage = error.error;
+        errorMessage = error.error
       } else if (typeof error.error === 'object') {
         if (error.error.msg) {
-          errorMessage = error.error.msg;
+          errorMessage = error.error.msg
         } else if (error.error.message) {
-          errorMessage = error.error.message;
+          errorMessage = error.error.message
         } else if (error.error.errors) {
           try {
-            errorMessage = JSON.stringify(error.error.errors);
+            errorMessage = JSON.stringify(error.error.errors)
           } catch (e) {
-            console.error('Error extracting validation errors:', e);
+            console.error('Error extracting validation errors:', e)
           }
         }
       }
     }
-    
-    return throwError(() => new Error(errorMessage));
+
+    return throwError(() => new Error(errorMessage))
   }
 
   getDoctors(): Observable<User[]> {
-    console.log('Fetching all doctors...');
+    console.log('Fetching all doctors...')
     return this.http
-      .get<ApiResponse<User[]>>(`${this.apiUrl}/get-all-doctors`, {
-        headers: this.getHeaders(),
-      })
+      .get<ApiResponse<User[]>>(`${this.apiUrl}/get-all-doctors`)
       .pipe(
-        map((response) => {
-          console.log('Doctors response:', response);
+        map(response => {
+          console.log('Doctors response:', response)
           // No mapping needed since models are aligned
-          return response.data;
+          return response.data
         }),
-        catchError(this.handleError)
-      );
+        catchError(this.handleError),
+      )
   }
 
   getDoctor(id: string): Observable<User> {
     if (!id) {
-      return throwError(() => new Error('Doctor ID is required'));
+      return throwError(() => new Error('Doctor ID is required'))
     }
-    
-    console.log(`Fetching doctor with ID: ${id}`);
+
+    console.log(`Fetching doctor with ID: ${id}`)
     return this.http
-      .get<ApiResponse<User>>(`${this.apiUrl}/get-doctor-by-id/${id}`, {
-        headers: this.getHeaders(),
-      })
+      .get<ApiResponse<User>>(`${this.apiUrl}/get-doctor-by-id/${id}`)
       .pipe(
-        map((response) => {
-          console.log('Doctor details response:', response);
+        map(response => {
+          console.log('Doctor details response:', response)
           // No mapping needed since models are aligned
-          return response.data;
+          return response.data
         }),
-        catchError(this.handleError)
-      );
+        catchError(this.handleError),
+      )
   }
 
   createDoctor(doctorData: any): Observable<User> {
@@ -96,120 +97,131 @@ export class DoctorService {
     const formattedData = {
       ...doctorData,
       // Ensure gender is numeric
-      gender: typeof doctorData.gender === 'string' 
-        ? (doctorData.gender === 'Male' ? Gender.Male : Gender.Female)
-        : doctorData.gender,
+      gender:
+        typeof doctorData.gender === 'string'
+          ? doctorData.gender === 'Male'
+            ? Gender.Male
+            : Gender.Female
+          : doctorData.gender,
       // Ensure role is numeric
-      role: UserRole.Doctor
-    };
-    
-    console.log('Creating doctor with formatted data:', formattedData);
-    
+      role: UserRole.Doctor,
+    }
+
+    console.log('Creating doctor with formatted data:', formattedData)
+
     return this.http
-      .post<ApiResponse<User>>(`${this.apiUrl}/create-doctor`, formattedData, {
-        headers: this.getHeaders(),
-      })
+      .post<ApiResponse<User>>(`${this.apiUrl}/create-doctor`, formattedData)
       .pipe(
-        map((response) => {
-          console.log('Create doctor response:', response);
+        map(response => {
+          console.log('Create doctor response:', response)
           // No mapping needed since models are aligned
-          return response.data;
+          return response.data
         }),
-        catchError(this.handleError)
-      );
+        catchError(this.handleError),
+      )
   }
 
   updateDoctor(doctorData: any): Observable<User> {
     if (!doctorData.idPublic) {
-      return throwError(() => new Error('Doctor ID is required for updates'));
+      return throwError(() => new Error('Doctor ID is required for updates'))
     }
-    
+
     // Make sure gender is the numeric value (if it's string)
     const formattedData = {
       ...doctorData,
       // Ensure gender is numeric
-      gender: typeof doctorData.gender === 'string' 
-        ? (doctorData.gender === 'Male' ? Gender.Male : Gender.Female)
-        : doctorData.gender
-    };
-    
-    console.log(`Updating doctor with ID: ${doctorData.idPublic}`, formattedData);
-    
+      gender:
+        typeof doctorData.gender === 'string'
+          ? doctorData.gender === 'Male'
+            ? Gender.Male
+            : Gender.Female
+          : doctorData.gender,
+    }
+
+    console.log(
+      `Updating doctor with ID: ${doctorData.idPublic}`,
+      formattedData,
+    )
+
     return this.http
       .put<ApiResponse<User>>(
         `${this.apiUrl}/update-doctor/${doctorData.idPublic}`,
         formattedData,
-        { headers: this.getHeaders() }
       )
       .pipe(
-        map((response) => {
-          console.log('Update doctor response:', response);
+        map(response => {
+          console.log('Update doctor response:', response)
           // No mapping needed since models are aligned
-          return response.data;
+          return response.data
         }),
-        catchError(this.handleError)
-      );
+        catchError(this.handleError),
+      )
   }
 
   deleteDoctor(id: string): Observable<void> {
     if (!id) {
-      return throwError(() => new Error('Doctor ID is required for deletion'));
+      return throwError(() => new Error('Doctor ID is required for deletion'))
     }
-    
-    console.log(`Deleting doctor with ID: ${id}`);
+
+    console.log(`Deleting doctor with ID: ${id}`)
     return this.http
-      .delete<ApiResponse<void>>(`${this.apiUrl}/delete-doctor/${id}`, {
-        headers: this.getHeaders(),
-      })
+      .delete<ApiResponse<void>>(`${this.apiUrl}/delete-doctor/${id}`)
       .pipe(
         map(() => {
-          console.log('Doctor deleted successfully');
-          return undefined;
+          console.log('Doctor deleted successfully')
+          return undefined
         }),
-        catchError(this.handleError)
-      );
+        catchError(this.handleError),
+      )
   }
 
   // Updated method to download doctor information as PDF directly
   downloadDoctorPdf(doctorId: string, doctorName: string): Observable<boolean> {
     if (!doctorId) {
-      return throwError(() => new Error('Doctor ID is required for PDF generation'));
+      return throwError(
+        () => new Error('Doctor ID is required for PDF generation'),
+      )
     }
-    
-    console.log(`Generating PDF for doctor with ID: ${doctorId}`);
-    
+
+    console.log(`Generating PDF for doctor with ID: ${doctorId}`)
+
     return this.http
       .get(`${this.apiUrl}/generate-doctor-pdf/${doctorId}`, {
         headers: new HttpHeaders({
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2MiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtaW5AYWRtaW4uY29tIiwiZXhwIjoxNzQ0MjA1NzUwLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.bfxXGP05ha-mw7AgRnnzveg8-8x8ey4rEO6dvG6gZcQ`
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2MiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiYWRtaW5AYWRtaW4uY29tIiwiZXhwIjoxNzQ0MjA1NzUwLCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.bfxXGP05ha-mw7AgRnnzveg8-8x8ey4rEO6dvG6gZcQ`,
         }),
-        responseType: 'blob'
+        responseType: 'blob',
       })
       .pipe(
         map(response => {
-          console.log('PDF generated successfully');
-          
+          console.log('PDF generated successfully')
+
           // Create a blob URL from the PDF data
-          const blob = new Blob([response], { type: 'application/pdf' });
-          const url = window.URL.createObjectURL(blob);
-          
+          const blob = new Blob([response], { type: 'application/pdf' })
+          const url = window.URL.createObjectURL(blob)
+
           // Create a temporary anchor element to trigger the download
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `Doctor_${doctorName}_Info.pdf`;
-          document.body.appendChild(a);
-          a.click();
-          
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `Doctor_${doctorName}_Info.pdf`
+          document.body.appendChild(a)
+          a.click()
+
           // Clean up
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
-          
-          return true; // Return success
+          window.URL.revokeObjectURL(url)
+          document.body.removeChild(a)
+
+          return true // Return success
         }),
         catchError(error => {
-          console.error('Error downloading PDF:', error);
-          return throwError(() => new Error('Failed to download doctor information: ' + error.message));
-        })
-      );
+          console.error('Error downloading PDF:', error)
+          return throwError(
+            () =>
+              new Error(
+                'Failed to download doctor information: ' + error.message,
+              ),
+          )
+        }),
+      )
   }
 }

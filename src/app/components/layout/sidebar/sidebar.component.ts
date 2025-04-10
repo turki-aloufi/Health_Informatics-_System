@@ -9,6 +9,10 @@ import { PanelMenuModule } from 'primeng/panelmenu'
 import { MenuItem } from 'primeng/api'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 import { SvgIconComponent } from 'angular-svg-icon'
+import { LogoComponent } from '../../shared/logo/logo/logo.component'
+import { AuthService } from '@/app/services/auth.service'
+import { CurrentUser, User, UserRole } from '@/app/models/user.model'
+import { Observable, Subscription } from 'rxjs'
 
 interface ExtendedMenuItem extends MenuItem {
   routerLinkActiveOptions?: Record<string, any>
@@ -24,6 +28,7 @@ interface ExtendedMenuItem extends MenuItem {
     RouterLinkActive,
     RouterLink,
     SvgIconComponent,
+    LogoComponent,
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
@@ -32,33 +37,25 @@ export class SidebarComponent {
   visible: boolean = true
   isMobile: boolean = false
   items = signal<ExtendedMenuItem[]>([])
-
+  user?: User
+  private userSubscription?: Subscription
   constructor(
     private breakpointObserver: BreakpointObserver,
     public sidebarService: SidebarService,
-  ) {}
+    private authService: AuthService,
+  ) {
+    authService.loadCurrentUser()
+  }
 
   ngOnInit() {
-    this.items.set([
-      {
-        label: 'Dashboard',
-        icon: 'assets/images/view_cozy_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
-        routerLink: 'doctor/dashboard/',
-        routerLinkActiveOptions: { exact: true },
-      },
-      {
-        label: 'Dashboard',
-        icon: 'assets/images/view_cozy_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
-        routerLink: 'admin/dashboard/',
-        routerLinkActiveOptions: { exact: true },
-      },
-      {
-        label: 'Dashboard',
-        icon: 'assets/images/view_cozy_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
-        routerLink: 'patient/dashboard/',
-        routerLinkActiveOptions: { exact: true },
-      },
-    ])
+    this.userSubscription = this.authService.currentUser$.subscribe(user => {
+      this.user = user
+      if (user) {
+        this.updateSidebarMenu()
+      } else {
+        this.items.set([])
+      }
+    })
 
     this.breakpointObserver
       .observe([Breakpoints.XSmall, Breakpoints.Small])
@@ -71,6 +68,63 @@ export class SidebarComponent {
           this.sidebarService.openSidebar()
         }
       })
+  }
+
+  updateSidebarMenu() {
+    switch (this.user?.role) {
+      case UserRole.Admin:
+        this.items.set([
+          {
+            label: 'Dashboard',
+            icon: 'assets/images/view_cozy_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
+            routerLink: 'admin/dashboard/',
+            routerLinkActiveOptions: { exact: true },
+          },
+
+          {
+            label: 'Doctors Management',
+            icon: 'assets/images/stethoscope_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
+            routerLink: 'admin/doctor-management/',
+            routerLinkActiveOptions: { exact: true },
+          },
+
+          {
+            label: 'Patients Management',
+            icon: 'assets/images/personal_injury_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).svg',
+            routerLink: 'admin/patients/',
+            routerLinkActiveOptions: { exact: true },
+          },
+        ])
+        break
+      case UserRole.Patient:
+        this.items.set([
+          {
+            label: 'Appoiments ',
+            icon: 'assets/images/personal_injury_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).svg',
+            routerLink: 'admin/patients/',
+            routerLinkActiveOptions: { exact: true },
+          },
+        ])
+        break
+      case UserRole.Doctor:
+        this.items.set([
+          {
+            label: 'Dashboard',
+            icon: 'assets/images/view_cozy_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
+            routerLink: 'admin/dashboard/',
+            routerLinkActiveOptions: { exact: true },
+          },
+          {
+            label: 'Patients',
+            icon: 'assets/images/personal_injury_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).svg',
+            routerLink: 'admin/patients/',
+            routerLinkActiveOptions: { exact: true },
+          },
+        ])
+        break
+      default:
+        this.items.set([])
+    }
   }
   closeCallback(event: any) {
     this.sidebarService.closeSidebar()
