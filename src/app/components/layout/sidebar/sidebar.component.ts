@@ -103,6 +103,11 @@ export class SidebarComponent implements OnDestroy {
             icon: 'assets/images/personal_injury_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).svg',
             routerLink: 'admin/patients/',
             routerLinkActiveOptions: { exact: true },
+          },     {
+            label: 'Booking ',
+            icon: 'assets/images/personal_injury_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).svg',
+            routerLink: '/patient/booking',
+            routerLinkActiveOptions: { exact: true },
           },
         ])
         break

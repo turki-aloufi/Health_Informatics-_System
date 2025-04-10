@@ -1,0 +1,88 @@
+<!-- src/app/features/appointment-booking/appointment-booking.component.html -->
+<div class="appointment-booking-container">
+    <h1>Book an Appointment</h1>
+    
+    <!-- Doctor search section -->
+    <div class="search-section">
+      <h2>Step 1: Find a Doctor</h2>
+      <div class="search-box">
+        <input 
+          type="text" 
+          placeholder="Search by name, specialty or clinic" 
+          (input)="onSearchChange($event)"
+          class="search-input">
+      </div>
+      
+      <div class="doctors-list">
+        <div *ngIf="filteredDoctors.length === 0" class="no-results">
+          No doctors found matching your search.
+        </div>
+        
+        <div 
+          *ngFor="let doctor of filteredDoctors" 
+          class="doctor-card" 
+          [class.selected]="selectedDoctorId === doctor.doctorId"
+          (click)="selectDoctor(doctor.doctorId)">
+          <h3>{{ doctor.name }}</h3>
+          <p><strong>Specialty:</strong> {{ doctor.specialty }}</p>
+          <p><strong>Clinic:</strong> {{ doctor.clinic }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Appointment booking form -->
+    <div class="booking-form-section" *ngIf="selectedDoctorId">
+      <h2>Step 2: Select Date & Time</h2>
+      <form [formGroup]="bookingForm" (ngSubmit)="bookAppointment()">
+        <div class="form-group">
+          <label for="appointmentDate">Select Date:</label>
+          <input 
+            type="date" 
+            id="appointmentDate" 
+            formControlName="appointmentDate"
+            (change)="onDateChange($event)"
+            min="{{ today | date:'yyyy-MM-dd' }}">
+          <div *ngIf="bookingForm.get('appointmentDate')?.touched && bookingForm.get('appointmentDate')?.invalid" class="error">
+            Date is required
+          </div>
+        </div>
+        
+        <div class="time-slots-section" *ngIf="selectedDate">
+          <h3>Available Time Slots:</h3>
+          <div *ngIf="availableSlots.length === 0" class="loading">
+            Loading available slots...
+          </div>
+          
+          <div class="time-slots-container">
+            <div 
+              *ngFor="let slot of availableSlots" 
+              class="time-slot" 
+              [class.selected]="bookingForm.get('appointmentTime')?.value === slot.split('T')[1]"
+              (click)="selectTimeSlot(slot)">
+              {{ slot | date:'shortTime' }}
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="notes">Notes (Optional):</label>
+          <textarea id="notes" formControlName="notes" rows="3"></textarea>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="book-button">
+            Book Appointment
+          </button>
+        </div>
+      </form>
+      
+      <div *ngIf="bookingSuccess" class="success-message">
+        Your appointment has been booked successfully!
+      </div>
+      
+      <div *ngIf="bookingError" class="error-message">
+        {{ bookingError }}
+      </div>
+    </div>
+  </div>
+  

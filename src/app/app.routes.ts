@@ -8,6 +8,7 @@ import { PatientFormComponent } from './components/admin/patient-form/patient-fo
 import { PatientManagementComponent } from './components/admin/patient-management/patient-management.component'
 import { RegisterComponent } from './components/auth/register/register.component'
 import { DashboardComponent } from './dashboard/dashboard.component'
+import { AppointmentBookingComponent } from './components/appointment-booking/appointment-booking.component'
 
 export const routes: Routes = [
   {
@@ -28,7 +29,9 @@ export const routes: Routes = [
   },
   {
     path: 'patient',
-    children: [{ path: 'dashboard', component: DashboardComponent }],
+    children: [{ path: 'dashboard', component: DashboardComponent },
+      { path: 'booking', component: AppointmentBookingComponent }
+    ],
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
