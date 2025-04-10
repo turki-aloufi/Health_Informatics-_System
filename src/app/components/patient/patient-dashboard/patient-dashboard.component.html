@@ -1,0 +1,293 @@
+<div class="dashboard-container p-3 md:p-4">
+  <h1 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">
+    My Health Dashboard
+  </h1>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="flex justify-center items-center h-64">
+    <p-progressSpinner
+      strokeWidth="4"
+      [style]="{ width: '50px', height: '50px' }"
+    ></p-progressSpinner>
+  </div>
+
+  <!-- Dashboard content -->
+  <div *ngIf="!loading" class="grid">
+    <!-- Summary Cards -->
+    <div class="col-span-1">
+      <p-card styleClass="h-full shadow-2">
+        <div class="flex flex-column align-items-center text-center">
+          <span class="text-3xl md:text-5xl font-bold text-blue-500">{{
+            summary?.totalAppointments || 0
+          }}</span>
+          <span class="mt-2 text-base md:text-lg">Total Appointments</span>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-span-1">
+      <p-card styleClass="h-full shadow-2">
+        <div class="flex flex-column align-items-center text-center">
+          <span class="text-3xl md:text-5xl font-bold text-green-500">{{
+            summary?.upcomingAppointments || 0
+          }}</span>
+          <span class="mt-2 text-base md:text-lg">Upcoming Appointments</span>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-span-1">
+      <p-card styleClass="h-full shadow-2">
+        <div class="flex flex-column align-items-center text-center">
+          <span class="text-3xl md:text-5xl font-bold text-purple-500">{{
+            summary?.completedAppointments || 0
+          }}</span>
+          <span class="mt-2 text-base md:text-lg">Completed Appointments</span>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-span-1">
+      <p-card styleClass="h-full shadow-2">
+        <div class="flex flex-column align-items-center text-center">
+          <span class="text-3xl md:text-5xl font-bold text-orange-500">{{
+            summary?.recentAppointments || 0
+          }}</span>
+          <span class="mt-2 text-base md:text-lg"
+            >Recent (30d) Appointments</span
+          >
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Patient Profile -->
+    <div class="col-span-2">
+      <p-card header="My Profile" styleClass="h-full shadow-2">
+        <div *ngIf="patientProfile" class="grid">
+          <div class="col-6 mb-3">
+            <div class="font-medium">Name:</div>
+            <div>{{ user?.name || 'N/A' }}</div>
+          </div>
+          <div class="col-6 mb-3">
+            <div class="font-medium">Email:</div>
+            <div>{{ user?.email || 'N/A' }}</div>
+          </div>
+          <div class="col-6 mb-3">
+            <div class="font-medium">Date of Birth:</div>
+            <div>{{ formatDate(user?.doB?.toString()) || 'N/A' }}</div>
+          </div>
+          <div class="col-6 mb-3">
+            <div class="font-medium">Gender:</div>
+            <div>
+              {{ getGenderText(patientProfile.user?.gender) || 'N/A' }}
+            </div>
+          </div>
+          <div class="col-6 mb-3">
+            <div class="font-medium">Phone:</div>
+            <div>{{ user?.phoneNumber || 'N/A' }}</div>
+          </div>
+          <div class="col-6 mb-3">
+            <div class="font-medium">Address:</div>
+            <div>{{ user?.address || 'N/A' }}</div>
+          </div>
+          <div class="col-12">
+            <p-divider></p-divider>
+            <div class="font-medium mb-2">Medical History:</div>
+            <div class="whitespace-pre-wrap">
+              {{
+                patientProfile.medicalHistory || 'No medical history recorded.'
+              }}
+            </div>
+          </div>
+          <div class="col-12 mt-3">
+            <div class="font-medium mb-2">Insurance Details:</div>
+            <div class="whitespace-pre-wrap">
+              {{
+                patientProfile.insuranceDetails ||
+                  'No insurance details recorded.'
+              }}
+            </div>
+          </div>
+          <div class="col-12 mt-3">
+            <div class="font-medium mb-2">Emergency Contact:</div>
+            <div>
+              {{
+                patientProfile.emergencyContact ||
+                  'No emergency contact recorded.'
+              }}
+            </div>
+          </div>
+          <div class="col-12 mt-3 flex justify-content-end">
+            <!-- <button
+              pButton
+              label="Update Profile"
+              icon="pi pi-user-edit"
+              class="p-button-outlined"
+            ></button> -->
+          </div>
+        </div>
+        <div *ngIf="!patientProfile" class="text-center p-4">
+          No profile information available
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Appointments by Status Chart -->
+    <div class="col-span-2">
+      <p-card header="Appointments by Status" styleClass="h-full shadow-2">
+        <div class="chart-container">
+          <p-chart
+            type="pie"
+            [data]="chartData.appointmentStatus"
+            [options]="getChartOptions('pie')"
+          ></p-chart>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Upcoming Appointments Table -->
+    <div class="col-span-2">
+      <p-card header="Upcoming Appointments" styleClass="h-full shadow-2">
+        <p-scrollPanel
+          [style]="{ width: '100%', height: isMobile ? '320px' : '420px' }"
+        >
+          <div *ngIf="upcomingAppointments && upcomingAppointments.length > 0">
+            <p-table
+              [value]="upcomingAppointments"
+              styleClass="p-datatable-sm p-datatable-striped"
+              [scrollable]="true"
+              [responsive]="true"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Doctor</th>
+                  <th>Status</th>
+                  <th>Notes</th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-appointment>
+                <tr>
+                  <td>
+                    {{ formatDateTime(appointment.appointmentDateTime) }}
+                  </td>
+                  <td>{{ appointment.doctorName || 'N/A' }}</td>
+                  <td>{{ getStatusText(appointment.status) }}</td>
+                  <td>{{ appointment.notes || 'No notes' }}</td>
+                  <td></td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="5" class="text-center p-4">
+                    No upcoming appointments
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+          <div
+            *ngIf="!upcomingAppointments || upcomingAppointments.length === 0"
+            class="text-center p-4"
+          >
+            <p>You don't have any upcoming appointments.</p>
+            <button
+              pButton
+              label="Book an Appointment"
+              icon="pi pi-calendar-plus"
+              class="p-button mt-3"
+              (click)="navigateToBookingPage()"
+            ></button>
+          </div>
+        </p-scrollPanel>
+      </p-card>
+    </div>
+
+    <!-- Appointment History Table -->
+    <div class="col-span-2">
+      <p-card header="Appointment History" styleClass="h-full shadow-2">
+        <p-scrollPanel
+          [style]="{ width: '100%', height: isMobile ? '320px' : '420px' }"
+        >
+          <div *ngIf="appointmentHistory && appointmentHistory.length > 0">
+            <p-table
+              [value]="appointmentHistory"
+              styleClass="p-datatable-sm p-datatable-striped"
+              [scrollable]="true"
+              [responsive]="true"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Doctor</th>
+                  <th>Status</th>
+                  <th>Notes</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-appointment>
+                <tr>
+                  <td>
+                    {{ formatDateTime(appointment.appointmentDateTime) }}
+                  </td>
+                  <td>{{ appointment.doctorName || 'N/A' }}</td>
+                  <td>{{ getStatusText(appointment.status) }}</td>
+                  <td>{{ appointment.notes || 'No notes' }}</td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="4" class="text-center p-4">
+                    No appointment history available
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+          <div
+            *ngIf="!appointmentHistory || appointmentHistory.length === 0"
+            class="text-center p-4"
+          >
+            No appointment history available
+          </div>
+        </p-scrollPanel>
+      </p-card>
+    </div>
+
+    <!-- Appointments Trend Chart -->
+    <div class="col-span-2">
+      <p-card header="Appointments Trend" styleClass="shadow-2">
+        <div class="mb-3 flex justify-content-end">
+          <p-dropdown
+            [options]="trendPeriodOptions"
+            [(ngModel)]="selectedTrendPeriod"
+            optionLabel="label"
+            (onChange)="loadAppointmentsTrend()"
+          ></p-dropdown>
+        </div>
+        <div
+          [style.height]="isMobile ? '220px' : '300px'"
+          class="chart-container"
+        >
+          <p-chart
+            type="line"
+            [data]="chartData.appointmentsTrend"
+            [options]="getChartOptions('line')"
+          ></p-chart>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Create Appointment Button -->
+    <div class="col-span-4 flex justify-content-end mt-3">
+      <button
+        pButton
+        label="Book New Appointment"
+        icon="pi pi-calendar-plus"
+        class="p-button-lg"
+      ></button>
+    </div>
+  </div>
+</div>
+
+<p-toast></p-toast>
