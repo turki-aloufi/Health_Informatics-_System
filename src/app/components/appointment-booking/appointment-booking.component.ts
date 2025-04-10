@@ -47,8 +47,6 @@ export class AppointmentBookingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-
     this.userSubscription = this.authService.currentUser$.subscribe(user => {
       this.user = user
     
@@ -130,19 +128,16 @@ export class AppointmentBookingComponent implements OnInit {
     
     const formValues = this.bookingForm.value;
     const appointmentDateTime = `${formValues.appointmentDate}T${formValues.appointmentTime}`;
-    console.log('Booking appointment with data: ', {
-      patientId: this.userId,
-      doctorId: formValues.doctorId,
-      appointmentDateTime,
-      notes: formValues.notes
-    });
     
+    // Create appointment data with null-safe notes field
     const appointmentData = {
       patientId: this.userId,
       doctorId: formValues.doctorId,
       appointmentDateTime: appointmentDateTime,
-      notes: formValues.notes
+      notes: formValues.notes || '' // Convert null to empty string
     };
+    
+    console.log('Booking appointment with data: ', appointmentData);
     
     this.appointmentService.createAppointment(appointmentData).subscribe({
       next: () => {
