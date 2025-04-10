@@ -9,6 +9,7 @@ export enum AppointmentStatus {
   
   export interface Appointment {
     appointmentId?: string;
+    appointmentIdPublic?: string;
     patientId: string;
     doctorId: string;
     appointmentDateTime: Date;
@@ -16,4 +17,8 @@ export enum AppointmentStatus {
     notes?: string;
     patientProfile?: PatientProfile;
     doctorProfile?: DoctorProfile;
+    patientName?: string;
+  patientEmail?: string;
+  patientPhone?: string;
+  patientGender?: string;
   }

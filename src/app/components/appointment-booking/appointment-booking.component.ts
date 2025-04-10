@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DoctorService, Doctor } from '../../services/doctor.service';
+import { DoctorService,Doctor } from '../../services/doctor.service';
 import { AppointmentService } from '../../services/appointment.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
