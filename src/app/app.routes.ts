@@ -9,12 +9,22 @@ import { PatientManagementComponent } from './components/admin/patient-managemen
 import { RegisterComponent } from './components/auth/register/register.component'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { AppointmentBookingComponent } from './components/appointment-booking/appointment-booking.component'
+import { DoctorDashboardComponent } from './components/doctor/doctor-dashboard.component'
+import { DoctorProfileComponent } from './components/doctor/doctor-profile.component'
+import { UpcomingAppointmentsComponent } from './components/doctor/upcoming-appointments.component'
+import { PastAppointmentsComponent } from './components/doctor/past-appointments.component'
 import { PatientDashboardComponent } from './components/patient/patient-dashboard/patient-dashboard.component'
 
 export const routes: Routes = [
   {
     path: 'doctor',
-    children: [{ path: 'dashboard', component: AdminDashboardComponent }],
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DoctorDashboardComponent },
+      { path: 'profile', component: DoctorProfileComponent },
+      { path: 'upcoming-appointments', component: UpcomingAppointmentsComponent },
+      { path: 'past-appointments', component: PastAppointmentsComponent },
+    ],
   },
   {
     path: 'admin',

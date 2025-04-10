@@ -117,15 +117,15 @@ export class SidebarComponent implements OnDestroy {
           {
             label: 'Dashboard',
             icon: 'assets/images/view_cozy_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg',
-            routerLink: 'admin/dashboard/',
+            routerLink: 'doctor/dashboard/',
             routerLinkActiveOptions: { exact: true },
           },
-          {
-            label: 'Patients',
-            icon: 'assets/images/personal_injury_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).svg',
-            routerLink: 'admin/patients/',
-            routerLinkActiveOptions: { exact: true },
-          },
+          // {
+          //   label: 'Patients',
+          //   icon: 'assets/images/personal_injury_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).svg',
+          //   routerLink: 'doctor/patients/',
+          //   routerLinkActiveOptions: { exact: true },
+          // },
         ])
         break
       default:

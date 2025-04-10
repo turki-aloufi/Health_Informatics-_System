@@ -1,0 +1,122 @@
+<!-- updated doctor-dashboard.component.html -->
+<div class="w-full h-full p-4 flex flex-col gap-5">
+    <p-toast position="top-right"></p-toast>
+    
+    <p class="text-2xl px-2.5 font-semibold text-color">Doctor Dashboard</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- My Profile Card -->
+      <p-card styleClass="dashboard-card cursor-pointer" (click)="navigateTo('profile')">
+        <ng-template pTemplate="header">
+          <div class="bg-primary-50 p-4 text-center">
+            <i class="pi pi-user text-4xl text-primary-500"></i>
+          </div>
+        </ng-template>
+        <div class="p-4 text-center">
+          <h3 class="text-xl font-medium mb-2">My Profile</h3>
+          <p class="text-surface-600">View and manage your doctor profile information</p>
+        </div>
+        <ng-template pTemplate="footer">
+          <div class="p-3 flex justify-center">
+            <p-button label="View Profile" icon="pi pi-arrow-right" iconPos="right"></p-button>
+          </div>
+        </ng-template>
+      </p-card>
+      
+      <!-- Upcoming Appointments Card -->
+      <p-card styleClass="dashboard-card cursor-pointer" (click)="navigateTo('upcoming-appointments')">
+        <ng-template pTemplate="header">
+          <div class="bg-green-50 p-4 text-center">
+            <i class="pi pi-calendar text-4xl text-green-500"></i>
+          </div>
+        </ng-template>
+        <div class="p-4 text-center">
+          <h3 class="text-xl font-medium mb-2">Upcoming Appointments</h3>
+          <p class="text-surface-600">Manage your scheduled appointments and add patient notes</p>
+        </div>
+        <ng-template pdoTemplate="footer">
+          <div class="p-3 flex justify-center">
+            <p-button label="View Appointments" icon="pi pi-arrow-right" iconPos="right" severity="success"></p-button>
+          </div>
+        </ng-template>
+      </p-card>
+      
+      <!-- Past Appointments Card -->
+      <p-card styleClass="dashboard-card cursor-pointer" (click)="navigateTo('past-appointments')">
+        <ng-template pTemplate="header">
+          <div class="bg-blue-50 p-4 text-center">
+            <i class="pi pi-history text-4xl text-blue-500"></i>
+          </div>
+        </ng-template>
+        <div class="p-4 text-center">
+          <h3 class="text-xl font-medium mb-2">Past Appointments</h3>
+          <p class="text-surface-600">Review your completed appointments and patient history</p>
+        </div>
+        <ng-template pTemplate="footer">
+          <div class="p-3 flex justify-center">
+            <p-button label="View History" icon="pi pi-arrow-right" iconPos="right" severity="info"></p-button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+    
+    <!-- Quick Stats Section -->
+    <div class="mt-6">
+      <p class="text-xl px-2.5 font-semibold text-color mb-4">Quick Stats</p>
+      
+      <div *ngIf="loading" class="flex justify-center p-4">
+        <p-progressSpinner [strokeWidth]="'4'" [style]="{ width: '50px', height: '50px' }"></p-progressSpinner>
+      </div>
+      
+      <div *ngIf="!loading" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-primary-500">
+          <p class="text-surface-600 text-sm">Today's Appointments</p>
+          <p class="text-2xl font-semibold">{{ stats.todayAppointments }}</p>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-500">
+          <p class="text-surface-600 text-sm">Upcoming Appointments</p>
+          <p class="text-2xl font-semibold">{{ stats.upcomingAppointments }}</p>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500">
+          <p class="text-surface-600 text-sm">Completed This Week</p>
+          <p class="text-2xl font-semibold">{{ stats.completedThisWeek }}</p>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-orange-500">
+          <p class="text-surface-600 text-sm">Patients Seen This Month</p>
+          <p class="text-2xl font-semibold">{{ stats.patientsSeenThisMonth }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Today's Appointments Preview -->
+    <div class="mt-6" *ngIf="stats.todayAppointments > 0 && !loading">
+      <p class="text-xl px-2.5 font-semibold text-color mb-4">Today's Schedule</p>
+      
+      <p-card styleClass="mb-4">
+        <div class="text-right mb-3">
+          <p-button label="View All" icon="pi pi-external-link" iconPos="right" (onClick)="navigateTo('upcoming-appointments')" outlined></p-button>
+        </div>
+        
+        <div *ngIf="loadingAppointments" class="flex justify-center p-4">
+          <p-progressSpinner [strokeWidth]="'3'" [style]="{ width: '30px', height: '30px' }"></p-progressSpinner>
+        </div>
+        
+        <div *ngIf="!loadingAppointments">
+          <div *ngFor="let appointment of todaysAppointments" class="border-l-4 border-green-500 pl-3 mb-3 py-2">
+            <div class="flex justify-between">
+              <p class="font-medium">{{ formatAppointmentTime(appointment.appointmentDateTime) }} - Patient ID: {{ appointment.patientId }}</p>
+              <p-tag [value]="appointment.status" [severity]="getStatusSeverity(appointment.status)"></p-tag>
+            </div>
+            <p class="text-surface-600 text-sm">{{ appointment.notes || 'No notes available' }}</p>
+          </div>
+          
+          <div *ngIf="todaysAppointments.length === 0" class="text-center p-4 text-surface-600">
+            No more appointments scheduled for today.
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </div>
